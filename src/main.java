@@ -37,7 +37,7 @@ class Main {
 				Tea tea = menu.teas.get(teaSelection);
 				order.addItem(tea, quantity);
 
-				System.out.println("Need more tea? (y/n)");
+				System.out.printf("Need more tea? (y/n) ");
 				addNext = sc.next().charAt(0);
 			}
 
