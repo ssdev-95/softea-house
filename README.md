@@ -13,6 +13,13 @@
 - [ ] Pay a given order.
 - [ ] Cash system.
 
+## Roadmap
+
+- [ ] Includes some QRCode logic.
+- [ ] Persist using a database.
+- [ ] Become an Api.
+- [ ] Create an web/mobile app to consume this Api.
+
 ## Techa used
 
 - [x] Java. :D
