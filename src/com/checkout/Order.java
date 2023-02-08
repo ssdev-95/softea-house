@@ -2,9 +2,7 @@ package com.checkout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -15,6 +13,7 @@ public class Order {
   public String id;
   public List<OrderItem> cart;
 	public LocalDateTime createdAt;
+	public double totalPrice = 0;
 
 	public Order() {
 		this.id = UUID.randomUUID().toString();
@@ -22,40 +21,34 @@ public class Order {
 		this.cart = new ArrayList<OrderItem>();
 	}
 
-	public void addItem(Tea tea,int quantity) {
+	public OrderItem addItem(Tea tea,int quantity) {
 		OrderItem item = new OrderItem(tea, quantity);
+		totalPrice += item.ammount_price;
+
 		this.cart.add(item);
+		return item;
 	}
 
 	public void getSummary(Menu menu) {
-		double total = 0;
 		String totalLog = "";
-		String date = formatDate();
-		
+		String date = formatOrderCreationDate();
+		// TODO: clean log with 59x '='
 		System.out.println("===========================================================");
 		System.out.println("  Casa das Teas                 " + date);
 		System.out.println("-----------------------------------------------------------");
 		System.out.println("  Order - " + this.id);
 		System.out.println("===========================================================");
 
-		for (int i = 0; i < cart.size(); i++) {
-			OrderItem item = cart.get(i);
-			total += item.ammount_price;
-
-			String sku = menu
-				.teas
-				.stream()
-				.filter(t -> Objects.equals(t.cod, item.tea_id))
-				.findFirst()
-				.get()
-				.sku;
-
+		for (OrderItem item : cart) {
+			int index = cart.indexOf(item);
+			String sku = menu.findOne(item.tea_id).sku;
 			String log = String
-				.format("  %1$s. %2$s ->       %3$s x %4$s = %5$s", i, sku, item.quantity, item.unity_price, item.ammount_price);
+				.format("  %1$s. %2$s ->       %3$s x %4$s = %5$s", index, sku, item.quantity, item.unity_price, item.ammount_price);
+
 			System.out.println(log);
 		}
 
-		totalLog = String.format("  Items: %2$s        Total price: R$ %1$s", total, cart.size());
+		totalLog = String.format("  Items: %2$s        Total price: R$ %1$s", totalPrice, cart.size());
 	
 		System.out.println("===========================================================");
 		System.out.println(totalLog);
@@ -66,12 +59,18 @@ public class Order {
 		System.out.println("===========================================================");
 	}
 
-	private String formatDate() {
+	private String formatOrderCreationDate() {
 		String formatedDate = DateTimeFormatter
 			.ofPattern("E dd MMM, yyyy - HH:mm")
 			.format(createdAt);
 
 		return formatedDate;
+	}
+
+	public void save(OrderItem item, Checkout checkout) {
+		String itemLine = String.format("");
+		checkout.externalFile.add(itemLine);
+		System.out.println("Order saved!");
 	}
 }
 
