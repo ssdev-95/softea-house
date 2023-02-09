@@ -9,6 +9,7 @@
 - [x] Create orders.
 - [ ] Update orders.
 - [ ] Delete orders.
+- [x] Persist orders.
 - [ ] Retrieve info about an order.
 - [ ] Pay a given order.
 - [ ] Cash system.
