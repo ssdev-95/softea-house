@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.product.*;
@@ -20,6 +21,7 @@ public class Checkout {
 	int operation = 0;
 
 	public Checkout() {
+		externalFile = new ArrayList<String>();
 		try {
 			filePath = Paths.get(FILE_NAME);
 			menu = new Menu();
@@ -56,7 +58,7 @@ public class Checkout {
 		sc.close();
 	}
 
-	private void createOrder() {
+	private void createOrder() throws IOException {
 		menu.listTeas();
 
 		Scanner sc = new Scanner(System.in);
@@ -79,12 +81,13 @@ public class Checkout {
 
 			Tea tea = menu.teas.get(teaSelection);
 			OrderItem orderItem = order.addItem(tea, quantity);
-			order.save(orderItem, this);
+			externalFile.add(orderItem.toString());
 
 			System.out.printf("Need more tea? (y/n) ");       
 			addNext = sc.next().charAt(0);
 		}
 
+		order.save(FILE_NAME, externalFile);
 		order.getSummary(menu);
 
 		sc.close();
@@ -92,7 +95,16 @@ public class Checkout {
 
 	public void getCheckoutInfo() throws IOException {
 	  try {
-  		externalFile = Files.readAllLines(filePath);
+  		List<String> externalFileReaden = Files
+				.readAllLines(filePath);
+
+			for(String line : externalFileReaden) {
+				int index = externalFileReaden.indexOf(line);
+
+				if(index > 0) {
+					externalFile.add(externalFileReaden.get(index));
+				}
+			}
 		} catch(IOException exception) {
 			if(exception != null) {
 			  Files.createFile(filePath);

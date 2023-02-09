@@ -3,6 +3,9 @@ package com.checkout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,7 +25,7 @@ public class Order {
 	}
 
 	public OrderItem addItem(Tea tea,int quantity) {
-		OrderItem item = new OrderItem(tea, quantity);
+		OrderItem item = new OrderItem(tea, quantity, id);
 		totalPrice += item.ammount_price;
 
 		this.cart.add(item);
@@ -67,9 +70,21 @@ public class Order {
 		return formatedDate;
 	}
 
-	public void save(OrderItem item, Checkout checkout) {
-		String itemLine = String.format("");
-		checkout.externalFile.add(itemLine);
+	public void save(
+	  String fileName,List<String> externalFile
+	) throws IOException {
+		FileWriter fileWriter = new FileWriter(fileName);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+
+		printWriter.printf("order_id,tea_id,unity_price,quantity");
+
+		for(String line : externalFile) {
+			printWriter.printf('\n' + line);
+		}
+
+		printWriter.close();
+		fileWriter.close();
+
 		System.out.println("Order saved!");
 	}
 }
