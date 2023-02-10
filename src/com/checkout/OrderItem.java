@@ -35,6 +35,15 @@ public class OrderItem {
 		this.unity_price = teaPrice;
 	}
 
+	public OrderItem(String orderItem) {
+		String[] item = orderItem.split(",");
+		this.tea_id = item[1];
+		this.order_id = item[0];
+		this.unity_price = Double.parseDouble(item[2]);
+		this.quantity = Integer.parseInt(item[3]);
+		this.ammount_price = Integer.parseInt(item[3]) * Double.parseDouble(item[2]);
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%1$s,%2$s,%3$s,%4$s",
@@ -42,20 +51,6 @@ public class OrderItem {
 			tea_id,
 			unity_price,
 			quantity
-		);
-	}
-
-	public static OrderItem parse(String orderItem) {
-		String[] item = orderItem.split(",");
-		Constructor<OrderItem> constructor = OrderItem
-			.class
-			.getConstructor(com.checkout.OrderItem);
-
-		return constructor(
-			item[1],
-			item[0],
-			Double.parseDouble(item[2]),
-			item[3]
 		);
 	}
 }
