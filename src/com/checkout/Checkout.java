@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.checkout.enums.OrderStatus;
 import com.product.*;
 
 public class Checkout {
@@ -35,7 +36,6 @@ public class Checkout {
 		getCheckoutInfo();
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Welcome to the Casa das Teas");
 		System.out.println("Available operations:\n0. Buy something;\n1. Close order;\n2. Get daily revenues;\n");
 		System.out.printf("What's your need? ");
 		operation = sc.nextInt();
@@ -46,7 +46,7 @@ public class Checkout {
 				createOrder();
 				break;
 			case 1:
-				System.out.println("Pay order or wash pratos.");
+				payOrder();
 				break;
 			case 2:
 				System.out.println("Show daily revenue;");
@@ -62,11 +62,11 @@ public class Checkout {
 		menu.listTeas();
 
 		Scanner sc = new Scanner(System.in);
-		char addNext = 'y';
+		char hasNext = 'y';
 
 		Order order = new Order();
 
-		while(addNext != 'n') {
+		while(hasNext != 'n') {
 			System.out.printf("What should you drink next? ");  
 			int teaSelection = sc.nextInt();
 
@@ -84,13 +84,44 @@ public class Checkout {
 			externalFile.add(orderItem.toString());
 
 			System.out.printf("Need more tea? (y/n) ");       
-			addNext = sc.next().charAt(0);
+			hasNext = sc.next().charAt(0);
 		}
 
 		order.save(FILE_NAME, externalFile);
 		order.getSummary(menu);
 
 		sc.close();
+	}
+
+	public void payOrder() throws IOException {
+		String ioException = "Order id not supplied, try again.";
+		Scanner sc = new Scanner(System.in);
+		String orderId = sc.nextLine();
+
+		if(orderId.isBlank() || orderId.isEmpty()) {
+			throw new IOException(ioException);
+		}
+
+		List<OrderItem> items = findOrderItemsByOrderId(orderId);
+		OrderItem firstItem = items.get(0);
+		Order order = new Order(orderId, "", items, OrderStatus.PENDING_PAYMENT_ORDER);
+		System.out.println(order.id);
+		sc.close();
+	}
+
+	private List<OrderItem> findOrderItemsByOrderId(
+		String id) {
+		List<OrderItem> mappedList = new ArrayList();
+		List<String> filteredList = externalFile
+			.stream()
+			.filter(str -> str.contains(id))
+			.toList();
+
+		for(String item : filteredList) {
+			mappedList.add(OrderItem.parse(item));
+		}
+
+		return mappedList;
 	}
 
 	public void getCheckoutInfo() throws IOException {

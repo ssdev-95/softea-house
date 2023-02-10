@@ -1,4 +1,7 @@
-# Teahouse
+# SofTea House
+
+## Here we do what JS Libs don't,
+### Cherish the Dev's Experience.
 
 > Some TeaHouse related logic to leverage Java fundamentals
 
@@ -7,14 +10,12 @@
 - [x] Persist menu info.
 - [x] List menu info to user.
 - [x] Create orders.
-- [ ] Update orders.
-- [ ] Delete orders.
+- [ ] Update orders (Pay/Reverse).
 - [x] Persist orders.
 - [ ] Retrieve info about an order.
-- [ ] Pay a given order.
 - [ ] Cash system.
 
-## Roadmap
+## Roadmap (Subject to changes)
 
 - [ ] Includes some QRCode logic.
 - [ ] Persist using a database.

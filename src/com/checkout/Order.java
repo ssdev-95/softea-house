@@ -3,14 +3,17 @@ package com.checkout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.product.Menu;
 import com.product.Tea;
+import com.checkout.enums.*;
 
 public class Order {
   public String id;
@@ -18,10 +21,29 @@ public class Order {
 	public LocalDateTime createdAt;
 	public double totalPrice = 0;
 
+	private OrderStatus order_status;
+
 	public Order() {
 		this.id = UUID.randomUUID().toString();
 		this.createdAt = LocalDateTime.now();
 		this.cart = new ArrayList<OrderItem>();
+		this.order_status = OrderStatus.OPEN_ORDER;
+	}
+
+	public Order(
+		String orderId,
+		String createdAt,
+		List<OrderItem> cart,
+		OrderStatus status
+	) {
+		this.id = orderId;
+		this.createdAt = LocalDateTime.now();
+		this.cart = cart;
+		this.order_status = status;
+
+		for(OrderItem item : cart) {
+			this.totalPrice += item.ammount_price;
+		}
 	}
 
 	public OrderItem addItem(Tea tea,int quantity) {
@@ -76,16 +98,24 @@ public class Order {
 		FileWriter fileWriter = new FileWriter(fileName);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 
-		printWriter.printf("order_id,tea_id,unity_price,quantity");
+		printWriter.printf("order_id,tea_id,unity_price,quantity,created_at,order_status");
 
 		for(String line : externalFile) {
-			printWriter.printf('\n' + line);
+			printWriter.printf('\n' + line + "," + createdAt + "," + order_status);
 		}
 
 		printWriter.close();
 		fileWriter.close();
 
 		System.out.println("Order saved!");
+	}
+
+	public void setOrderStatus(String status) {
+		this.order_status = OrderStatus.valueOf(status);
+	}
+
+	public OrderStatus showStatus() {
+		return this.order_status;
 	}
 }
 
