@@ -41,7 +41,7 @@ public class OrderItem {
 		this.order_id = item[0];
 		this.unity_price = Double.parseDouble(item[2]);
 		this.quantity = Integer.parseInt(item[3]);
-		this.ammount_price = Integer.parseInt(item[3]) * Double.parseDouble(item[2]);
+		this.ammount_price = quantity * unity_price;
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.naming.OperationNotSupportedException;
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -101,7 +103,14 @@ public class Order {
 		printWriter.printf("order_id,tea_id,unity_price,quantity,created_at,order_status");
 
 		for(String line : externalFile) {
-			printWriter.printf('\n' + line + "," + createdAt + "," + order_status);
+			String newLine = String.format("%1$s,%2$s,%3$s",
+				line,
+				createdAt,
+				order_status
+			);
+
+			System.out.println(newLine);
+			printWriter.printf('\n' + newLine);
 		}
 
 		printWriter.close();

@@ -7,14 +7,15 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 
 import com.checkout.enums.OrderStatus;
+import com.checkout.operations.*;
 import com.product.*;
 
 public class Checkout {
-	private double cash = 0.00;
-	private final String rootDir = System.getProperty("user.dir");
-	private final String FILE_NAME = rootDir + "/assets/orders.csv";
+	//private double cash = 0.00;
+	private final String FILE_NAME;
 
 	private Menu menu;
 	private Path filePath;
@@ -22,11 +23,16 @@ public class Checkout {
 
 	int operation = 0;
 
-	public Checkout() {
+	public Checkout(String rootDir) {
 		externalFile = new ArrayList<String>();
+		FILE_NAME = String.format(
+			"%1$s/orders.csv",
+			rootDir
+		);
+
 		try {
 			filePath = Paths.get(FILE_NAME);
-			menu = new Menu();
+			menu = new Menu(rootDir);
 		} catch(Exception error) {
 			System.out.println("Failed to init checkout session.");
 			System.out.println(error);
@@ -43,14 +49,16 @@ public class Checkout {
 
 		switch(operation) {
 			case 0:
-				System.out.println("");
-				createOrder();
+				CreateOrderCheckoutOperation
+					.performOperation(externalFile, FILE_NAME, menu);
 				break;
 			case 1:
-				payOrder();
+				PayOrderCheckoutOperation
+					.performOperation(externalFile, FILE_NAME, null);
 				break;
 			case 2:
-				System.out.println("Show daily revenue;");
+				CloseCheckoutOperation
+					.performOperation(externalFile, null, null);
 				break;
 			default:
 				System.out.println("Operation not allowed, contact sysadmin.");
@@ -59,7 +67,7 @@ public class Checkout {
 		sc.close();
 	}
 
-	private void createOrder() throws IOException {
+	/*private void createOrder() throws IOException {
 		menu.listTeas();
 
 		Scanner sc = new Scanner(System.in);
@@ -172,7 +180,7 @@ public class Checkout {
 		}
 
 		return mappedList;
-	}
+	}*/
 
 	public void getCheckoutInfo() throws IOException {
 	  try {

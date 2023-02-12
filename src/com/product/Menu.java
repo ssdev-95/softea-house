@@ -7,19 +7,21 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Menu {
+	private String FILE_NAME;
 	public List<Tea> teas;
 
-	public Menu() throws Exception {
-		 String rootDir = System.getProperty("user.dir");
+	public Menu(String rootDir) throws Exception {
+		FILE_NAME = String.format("%1$s/tea.menu.csv", rootDir);
 
 		// TEA SHAPE IN MENU;
 		// COD,SKU,UNITY_PRICE,PICTURE_URL;
 		this.teas = new ArrayList<Tea>();
 
-		File file = new File(rootDir + "/assets/tea.menu.csv");
+		File file = new File(FILE_NAME);
 
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\n");
+
 
 		while (sc.hasNext()) {
 			String rowTea = sc.next();
@@ -45,7 +47,6 @@ public class Menu {
 			int index = teas.indexOf(tea);
 			String teaEntry = tea.toString(index);
 			System.out.println(teaEntry);
-
 		}
 	}
 

@@ -1,2 +1,2 @@
-*.class
-src/assets/orders.csv
+bin/
+assets/orders.*

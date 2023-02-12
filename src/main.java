@@ -1,16 +1,58 @@
+//package teahouse;
+
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+import java.io.File;
+import javax.swing.filechooser.FileSystemView;
 
 import com.checkout.Checkout;
 
+//import com.checkout.Checkout;
+
 class Main {
 	public static void main(String...args) {
-		Checkout checkout = new Checkout();
+		final String initMsg = "Welcome to my SofTea House\nHere we do what js libs don't: cherish the Dev's Experience";
+		String rootDir;
 
 		try {
-			System.out.println("Welcome to my SofTea House\nWhere we do what js libs don't: cherish the Dev's Experience");
+			Path rootPath = Paths
+				.get(".")
+				.normalize()
+				.toAbsolutePath();
+
+			rootDir = String.format(
+				"%1$s/assets",
+				rootPath.getParent().toString()
+			);
+
+			System.out.println(rootDir);
+
+			Checkout checkout = new Checkout(rootDir);
+			System.out.println(initMsg);
 			checkout.init();
-		} catch(IOException err) {
-			System.out.println(err);
+		} catch(Exception exception) {
+			System.out.println(exception);
 		}
+
+		/*long timestamp = Long.parseLong("1692331200000");
+		Instant instant = Instant.ofEpochMilli(timestamp);
+		LocalDate date = LocalDate
+			.ofInstant(instant, ZoneId.systemDefault());
+
+		System.out.println(date);
+
+		long time = LocalDateTime
+			.of(2023,8,18,0,0,0)
+			.atZone(ZoneId.of("America/Manaus"))
+			.toInstant()
+			.toEpochMilli();
+		
+		System.out.println(time);*/
 	}
 }
