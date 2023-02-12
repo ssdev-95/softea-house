@@ -26,4 +26,10 @@
 
 - [x] Java. :D
 
+## How to run locally
+
+>> Needs at least Java 8 SDK, preferrably use Java 17 SDK.
+
+Once cloned this repo, simply run the ` run.sh ` script file that where provided or make your own if not using an Unix like OS.
+
 > All thanks to [Amorim](https://github.com/code-pisces/) for come with this great idea, and for [Medeiro](https://github.com/liverday) for inciting me to embrace Java, again rsr..
