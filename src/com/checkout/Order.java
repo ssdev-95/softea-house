@@ -10,7 +10,9 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import com.product.Menu;
@@ -20,14 +22,14 @@ import com.checkout.enums.*;
 public class Order {
   public String id;
   public List<OrderItem> cart;
-	public LocalDateTime createdAt;
+	public Long createdAt;
 	public double totalPrice = 0;
 
 	private OrderStatus order_status;
 
 	public Order() {
 		this.id = UUID.randomUUID().toString();
-		this.createdAt = LocalDateTime.now();
+		this.createdAt = System.currentTimeMillis();
 		this.cart = new ArrayList<OrderItem>();
 		this.order_status = OrderStatus.OPEN_ORDER;
 	}
@@ -39,7 +41,7 @@ public class Order {
 		OrderStatus status
 	) {
 		this.id = orderId;
-		this.createdAt = LocalDateTime.now();
+		this.createdAt = Long.parseLong(createdAt);
 		this.cart = cart;
 		this.order_status = status;
 
@@ -87,9 +89,14 @@ public class Order {
 	}
 
 	private String formatOrderCreationDate() {
+		Instant instant = Instant.ofEpochMilli(createdAt);
+
+		LocalDateTime date = LocalDateTime
+			.ofInstant(instant, ZoneId.systemDefault());
+	
 		String formatedDate = DateTimeFormatter
-			.ofPattern("E dd MMM, yyyy - HH:mm")
-			.format(createdAt);
+			.ofPattern("E MMM dd, yyyy - HH:mm")
+			.format(date);
 
 		return formatedDate;
 	}
@@ -103,13 +110,19 @@ public class Order {
 		printWriter.printf("order_id,tea_id,unity_price,quantity,created_at,order_status");
 
 		for(String line : externalFile) {
-			String newLine = String.format("%1$s,%2$s,%3$s",
-				line,
-				createdAt,
-				order_status
-			);
+			String newLine;
+			int lineSteps = line.split(",").length;
 
-			System.out.println(newLine);
+			if(lineSteps <= 4) {
+				newLine = String.format("%1$s,%2$s,%3$s",
+					line,
+					createdAt,
+					order_status
+				);
+			} else {
+				newLine = line;
+			}
+
 			printWriter.printf('\n' + newLine);
 		}
 

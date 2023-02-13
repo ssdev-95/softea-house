@@ -13,8 +13,6 @@ import javax.swing.filechooser.FileSystemView;
 
 import com.checkout.Checkout;
 
-//import com.checkout.Checkout;
-
 class Main {
 	public static void main(String...args) {
 		final String initMsg = "Welcome to my SofTea House\nHere we do what js libs don't: cherish the Dev's Experience";
@@ -40,19 +38,14 @@ class Main {
 			System.out.println(exception);
 		}
 
-		/*long timestamp = Long.parseLong("1692331200000");
-		Instant instant = Instant.ofEpochMilli(timestamp);
-		LocalDate date = LocalDate
-			.ofInstant(instant, ZoneId.systemDefault());
-
-		System.out.println(date);
-
+		/*
 		long time = LocalDateTime
 			.of(2023,8,18,0,0,0)
 			.atZone(ZoneId.of("America/Manaus"))
 			.toInstant()
 			.toEpochMilli();
 		
-		System.out.println(time);*/
+		System.out.println(time);
+		*/
 	}
 }
