@@ -63,7 +63,7 @@ public class Order {
 		String date = formatOrderCreationDate();
 		// TODO: clean log with 59x '='
 		System.out.println("===========================================================");
-		System.out.println("  Casa das Teas                 " + date);
+		System.out.println("  Casa das Teas            " + date);
 		System.out.println("-----------------------------------------------------------");
 		System.out.println("  Order - " + this.id);
 		System.out.println("===========================================================");
@@ -71,8 +71,14 @@ public class Order {
 		for (OrderItem item : cart) {
 			int index = cart.indexOf(item);
 			String sku = menu.findOne(item.tea_id).sku;
-			String log = String
-				.format("  %1$s. %2$s ->       %3$s x %4$s = %5$s", index, sku, item.quantity, item.unity_price, item.ammount_price);
+			String log = String.format(
+				"  %1$s. %2$s ->       %3$s x %4$s = %5$s",
+				index,
+				sku,
+				item.quantity,
+				item.unity_price,
+				String.format("%.2f", item.ammount_price)
+			);
 
 			System.out.println(log);
 		}
@@ -89,14 +95,15 @@ public class Order {
 	}
 
 	private String formatOrderCreationDate() {
-		Instant instant = Instant.ofEpochMilli(createdAt);
-
-		LocalDateTime date = LocalDateTime
-			.ofInstant(instant, ZoneId.systemDefault());
+		LocalDateTime date = Instant
+			.ofEpochMilli(createdAt)
+			.atZone(ZoneId.systemDefault())
+			.toLocalDateTime();
 	
 		String formatedDate = DateTimeFormatter
 			.ofPattern("E MMM dd, yyyy - HH:mm")
-			.format(date);
+			.format(date)
+			.concat(" [UTC]");
 
 		return formatedDate;
 	}
