@@ -20,10 +20,9 @@ public class PayOrderCheckoutOperation {
 	public static void performOperation(
 		List<String> persistence,
 		String fileName,
-		Menu menu
+		Treasury treasury
 	) throws IOException {
 		finalCart = new ArrayList<String>();
-		double cash = 0.0;
 		String ioException = "Order id not supplied, try again.";
 		Scanner sc = new Scanner(System.in);
 
@@ -65,7 +64,7 @@ public class PayOrderCheckoutOperation {
 		}
 
 		order.setOrderStatus("PAID_ORDER");
-		cash += paymentAmmount;
+		treasury.addCash(paymentAmmount);
 
 		for(OrderItem item : order.cart) {
 			String orderLine = String.format("%1$s,%2$s,%3$s",
@@ -81,7 +80,6 @@ public class PayOrderCheckoutOperation {
 			finalCart.add(lastingOrder);
 		}
 
-		System.out.println("\nAmount in cash: $" + cash);
 		order.save(fileName, finalCart);
 
 		sc.close();
@@ -109,10 +107,6 @@ public class PayOrderCheckoutOperation {
 		String[] firstItem = filteredList.get(0).split(",");
 		createdOrderAt = firstItem[4];
 		status = OrderStatus.valueOf(firstItem[5]);
-
-		/*for(String lastingOrder : restOfTheOrders) {
-			orders.add(lastingOrder);
-		}*/
 
 		return list;
 	}
