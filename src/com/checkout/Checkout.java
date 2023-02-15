@@ -17,6 +17,7 @@ public class Checkout {
 	private final String FILE_NAME;
 
 	private Menu menu;
+	private Treasury treasury;
 	private Path filePath;
 	public List<String> externalFile;
 
@@ -32,6 +33,9 @@ public class Checkout {
 		try {
 			filePath = Paths.get(FILE_NAME);
 			menu = new Menu(rootDir);
+
+			treasury = new Treasury(rootDir);
+			treasury.getCashInfoFromTreasury();
 		} catch(Exception error) {
 			System.out.println("Failed to init checkout session.");
 			System.out.println(error);
@@ -42,7 +46,7 @@ public class Checkout {
 		getCheckoutInfo();
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Available operations:\n0. Buy something;\n1. Close order;\n2. Get daily revenues;\n");
+		System.out.println("Available operations:\n0. Buy something;\n1. Close order;\n2. Reverse an Order;\n3. Get daily revenues;\n");
 		System.out.printf("What's your need? ");
 		operation = sc.nextInt();
 
@@ -53,11 +57,15 @@ public class Checkout {
 				break;
 			case 1:
 				PayOrderCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, null);
+					.performOperation(externalFile, FILE_NAME, treasury);
 				break;
 			case 2:
+				ReverseOrderCheckoutOperation
+					.performOperation(externalFile, FILE_NAME, treasury);
+				break;
+			case 3:
 				CloseCheckoutOperation
-					.performOperation(externalFile, null, null);
+					.performOperation(externalFile, FILE_NAME, menu);
 				break;
 			default:
 				System.out.println("Operation not allowed, contact sysadmin.");
