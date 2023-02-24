@@ -13,7 +13,7 @@
 - [x] Update orders (Pay/Reverse).
 - [x] Persist orders.
 - [ ] Retrieve info about an order.
-- [] Cash system.
+- [ ] Cash system.
 
 ## Roadmap (Subject to changes)
 
