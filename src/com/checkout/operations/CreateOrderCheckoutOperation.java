@@ -2,11 +2,7 @@ package com.checkout.operations;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.IOException;
-
-import com.checkout.enums.OrderStatus;
-import com.checkout.operations.*;
 
 import com.product.*;
 import com.checkout.*;
@@ -17,12 +13,12 @@ public class CreateOrderCheckoutOperation implements CheckoutOperation {
 		String fileName,
 		Menu menu
 	) throws IOException {
-		menu.listTeas();
+		menu.listProducts();
 
 		Scanner sc = new Scanner(System.in);
 		char hasNext = 'y';
 
-		Order order = new Order();
+		Order order = new Order.OrderBuilder().build();
 
 		while(hasNext != 'n') {
 			System.out.printf("What should you drink next? ");  
@@ -37,13 +33,13 @@ public class CreateOrderCheckoutOperation implements CheckoutOperation {
 				break;
 			}
 
-			Tea tea = menu.teas.get(teaSelection);
-			OrderItem orderItem = order.addItem(tea, quantity);
+			Product prod = menu.products.get(teaSelection);
+
+			OrderItem orderItem = order.addItem(prod, quantity);
 			persistence.add(orderItem.toString());
 
 			System.out.printf("Need more tea? (y/n) ");       
 			hasNext = sc.next().charAt(0);
-
 		}
 
 		order.save(fileName, persistence);

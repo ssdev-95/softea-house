@@ -4,27 +4,24 @@ import java.nio.file.Paths;
 import com.checkout.Checkout;
 
 class Main {
-	public static void main(String...args) {
-		final String initMsg = "Welcome to my SofTea House\nHere we do what js libs don't: cherish the Dev's Experience";
-		private String rootDir;
+	private static final String INIT_LOG = ""+
+			"Welcome to my SofTea House\n"+
+			"Here we do what js libs don't: "+
+			"cherish the Dev's Experience";
 
+	public static void main(String...args) {
 		try {
-				String rootPath = Paths
+			String rootPath = Paths
 				.get(".")
 				.normalize()
 				.toAbsolutePath()
 				.getParent()
 				.toString();
 
-		System.out.println();
-	
-
-			rootDir = String.format("%1$s/assets", rootPath);
-
-			System.out.println(rootDir);
-
-			Checkout checkout = new Checkout(rootDir);
-			System.out.println(initMsg);
+			String rootDir = String.format("%1$s/assets", rootPath);
+			Checkout checkout = Checkout.getInstance(rootDir);
+			
+			System.out.println(INIT_LOG);
 			checkout.init();
 		} catch(Exception exception) {
 			System.out.println(exception);

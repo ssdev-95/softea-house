@@ -1,6 +1,5 @@
 package com.checkout.operations;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.Scanner;
 
 import com.checkout.enums.*;
 import com.checkout.*;
-import com.product.*;
 
 public class PayOrderCheckoutOperation {
 	private static OrderStatus status;
@@ -37,10 +35,16 @@ public class PayOrderCheckoutOperation {
 
 		List<OrderItem> mappedList = findOrderItemsByOrderId(orderId, persistence);
 
-		Order order = new Order(orderId, createdOrderAt, mappedList, status);
+		Order order = new Order.OrderBuilder()
+			.orderId(orderId)
+			.createdAt(Long.parseLong(createdOrderAt))
+			.cart(mappedList)
+			.orderStatus(status)
+			.build();
 
-		System.out.println("Order billing ammount: " + order.totalPrice);
-		System.out.printf("Pqyment methods:\n0. Cash[Experimental]\n1. Credit[Unnavailable]\n2. Pix[Unnavailable]\n\nWhich method you may use? ");
+		System.out.println(
+			"Order billing ammount: " + order.getTotalPrice());
+		System.out.printf("Payment methods:\n0. Cash[Experimental]\n1. Credit[Unnavailable]\n2. Pix[Unnavailable]\n\nWhich method you may use? ");
 
 		paymentMethod = sc.nextInt();
 
@@ -54,10 +58,10 @@ public class PayOrderCheckoutOperation {
 		System.out.printf("\nPay the order now: ");
 		double paymentAmmount = sc.nextDouble();
 
-		if(paymentAmmount < order.totalPrice) {
-			System.out.print("Quer me dar calote, é? Pague o resto ou lave a louça! Faltam: $" + (order.totalPrice - paymentAmmount));
-		} else if(paymentAmmount > order.totalPrice) {
-			System.out.println("Conta paga, volta sempre! Seu troco: $" + (paymentAmmount - order.totalPrice));
+		if(paymentAmmount < order.getTotalPrice()) {
+			System.out.print("Quer me dar calote, é? Pague o resto ou lave a louça! Faltam: $" + (order.getTotalPrice() - paymentAmmount));
+		} else if(paymentAmmount > order.getTotalPrice()) {
+			System.out.println("Conta paga, volta sempre! Seu troco: $" + (paymentAmmount - order.getTotalPrice()));
 			paymentAmmount += sc.nextDouble();
 		} else {
 			System.out.println("Conta paga, volta sempre!\nAgradeçemos a preferencia");
@@ -66,10 +70,10 @@ public class PayOrderCheckoutOperation {
 		order.setOrderStatus("PAID_ORDER");
 		treasury.addCash(paymentAmmount);
 
-		for(OrderItem item : order.cart) {
+		for(OrderItem item : order.getCart()) {
 			String orderLine = String.format("%1$s,%2$s,%3$s",
 					item.toString(),
-					order.createdAt,
+					order.getCreatedAt(),
 					order.showStatus()
 			);
 
@@ -97,12 +101,29 @@ public class PayOrderCheckoutOperation {
 			.filter(str -> !str.contains(id))
 			.toList();
 
+	/**
+		* @author Saloma Tech
+	  * @implNote
+    * ORDER ITEM SHAPE
+    * order_id,prod_id,unity_price,prod_quantity,created_at,order_status
+   */
+
 		for(String item : filteredList) {
-			list.add(new OrderItem(item));
+			String[] itemSplt = item.split(",");
+
+			OrderItem orderItem = new OrderItem.OrderItemBuilder()
+				.prodUnityPrice(Double.parseDouble(itemSplt[2]))
+				.prodQuantity(Integer.parseInt(itemSplt[3]))
+				.prodOrderId(itemSplt[1])
+				.prodId(itemSplt[0])
+				.prodAmount()
+				.build();
+
+			list.add(orderItem);
 		}
 
-		System.out.println("filtered: " + filteredList.size());
-		System.out.println("rest: " + lastingOrders.size());
+		//System.out.println("filtered: " + filteredList.size());
+		//System.out.println("rest: " + lastingOrders.size());
 
 		String[] firstItem = filteredList.get(0).split(",");
 		createdOrderAt = firstItem[4];

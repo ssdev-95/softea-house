@@ -1,57 +1,82 @@
 package com.checkout;
 
-import com.product.Tea;
-
 public class OrderItem {
-	public String tea_id;
-	public int quantity;
-	public double ammount_price;
-	public double unity_price;
-
+	private String prod_id;
+	private Integer prod_quantity;
+	private Double ammount_price;
+	private Double unity_price;
 	private String order_id;
 
-	public OrderItem(	
-		Tea tea,
-		int quantity,
-		String orderId
-	) {
-		this.order_id = orderId;
-		this.quantity = quantity;
-		this.tea_id = tea.cod;
-		this.ammount_price = quantity * tea.price;
-		this.unity_price = tea.price;
+	private OrderItem() {
+		order_id = null;
+		prod_quantity = null;
+		prod_id = null;
+		ammount_price = null;
+		unity_price = null;
 	}
 
-	public OrderItem(	
-		String teaCod,
-		String orderId,
-		double teaPrice,
-		int quantity
-	) {
-		this.order_id = orderId;
-		this.quantity = quantity;
-		this.tea_id = teaCod;
-		this.ammount_price = quantity * teaPrice;
-		this.unity_price = teaPrice;
+	private OrderItem(OrderItemBuilder builder) {
+		order_id = builder.order_id;
+		prod_quantity = builder.prod_quantity;
+		prod_id = builder.prod_id;
+		ammount_price = prod_quantity * unity_price;
+		unity_price = builder.unity_price;
+		ammount_price = builder.prod_quantity * builder.unity_price;
 	}
 
-	public OrderItem(String orderItem) {
-		String[] item = orderItem.split(",");
-		this.tea_id = item[1];
-		this.order_id = item[0];
-		this.unity_price = Double.parseDouble(item[2]);
-		this.quantity = Integer.parseInt(item[3]);
-		this.ammount_price = quantity * unity_price;
-	}
+	public String getProdId() { return prod_id; }
+	public String getOrderId() { return order_id; }
+	public Double getUnityPrice() { return unity_price; }
+	public Integer getProdQuantity() { return prod_quantity; }
+	public Double getAmmountPrice() { return ammount_price; }
 
 	@Override
 	public String toString() {
 		return String.format("%1$s,%2$s,%3$s,%4$s",
 			order_id,
-			tea_id,
+			prod_id,
 			unity_price,
-			quantity
+			prod_quantity
 		);
+	}
+
+	public static class OrderItemBuilder {
+		private String prod_id;
+		private Integer prod_quantity;
+		private Double ammount_price;
+		private Double unity_price;
+		private String order_id;
+
+		public OrderItemBuilder() { }
+
+		public OrderItemBuilder prodId(String id) {
+			prod_id = id;
+			return this;
+		}
+
+		public OrderItemBuilder prodQuantity(Integer quantity) {
+			prod_quantity = quantity;
+			return this;
+		}
+
+		public OrderItemBuilder prodUnityPrice(Double price) {
+			unity_price = price;
+			return this;
+		}
+
+		public OrderItemBuilder prodOrderId(String order) {
+			order_id = order;
+			return this;
+		}
+
+		public OrderItemBuilder prodAmount() {
+			ammount_price = prod_quantity + ammount_price;
+			return this;
+		}
+
+		public OrderItem build() {
+			return new OrderItem(this);
+		}
 	}
 }
 
