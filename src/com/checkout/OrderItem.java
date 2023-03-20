@@ -19,9 +19,8 @@ public class OrderItem {
 		order_id = builder.order_id;
 		prod_quantity = builder.prod_quantity;
 		prod_id = builder.prod_id;
-		ammount_price = prod_quantity * unity_price;
 		unity_price = builder.unity_price;
-		ammount_price = builder.prod_quantity * builder.unity_price;
+		ammount_price = builder.ammount_price;
 	}
 
 	public String getProdId() { return prod_id; }
@@ -70,7 +69,7 @@ public class OrderItem {
 		}
 
 		public OrderItemBuilder prodAmount() {
-			ammount_price = prod_quantity + ammount_price;
+			ammount_price = prod_quantity + unity_price;
 			return this;
 		}
 

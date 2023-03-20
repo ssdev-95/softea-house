@@ -4,28 +4,28 @@ public class Product {
 	private String cod;
 	private String sku;
 	private String category;
-	private double price;
+	private Double price;
 	private String pic;
 
 	public String getCategory() { return category; }
-	public double getPrice() { return price; }
+	public Double getPrice() { return price; }
 	public String getCod() { return cod; }
 	public String getPic() { return pic; }
 	public String getSku() { return sku; }
 
 	private Product(ProductBuilder builder) {
-		this.category = builder._category;
-		this.cod = builder._cod;
-		this.pic = builder._pic;
-		this.price = builder._price;
-		this.sku = builder._sku;
+		category = builder._category;
+		cod = builder._cod;
+		pic = builder._pic;
+		price = builder._price;
+		sku = builder._sku;
 	}
 
 	public static class ProductBuilder {
 		private String _cod;
 		private String _sku;
 		private String _category;
-		private double _price;
+		private Double _price;
 		private String _pic;
 
 		public ProductBuilder() {}
@@ -58,6 +58,11 @@ public class Product {
 		public Product build() {
 			return new Product(this);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%1$s [R$ %2$s]", sku, price);
 	}
 
 	public String toString(int index) {

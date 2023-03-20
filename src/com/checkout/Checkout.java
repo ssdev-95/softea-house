@@ -15,7 +15,7 @@ public class Checkout {
 		"1. Close order;\n"+
 		"2. Reverse an Order;\n"+
 		"3. Get daily revenues;\n\n"+
-		"What's your need?";
+		"What's your need? ";
 	
 	private static Checkout instance;
 	private final String FILE_NAME;
@@ -44,8 +44,10 @@ public class Checkout {
 	}
 
 	public static Checkout getInstance(String rootDir) {
-		if(instance.equals(null))
+		if(instance == null) {
 			instance = new Checkout(rootDir);
+		}
+
 		return instance;
 	}
 

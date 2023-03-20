@@ -72,6 +72,7 @@ public class Order {
 
 		for (OrderItem item : cart) {
 			int index = cart.indexOf(item);
+			double subtotal = item.getProdQuantity()*item.getUnityPrice();
 			String sku = menu.findOne(item.getProdId()).getSku();
 			strItems += String.format(
 				"  %1$s. %2$s ->       %3$s x %4$s = %5$s\n",
@@ -79,7 +80,7 @@ public class Order {
 				sku,
 				item.getProdQuantity(),
 				item.getUnityPrice(),
-				String.format("%.2f", item.getAmmountPrice())
+				String.format("%.2f", subtotal)
 			);
 		}
 
@@ -170,9 +171,9 @@ public class Order {
 
 		public Order build() {
 			if(
-			orderId.equals(null) &&
-			createdAt.equals(null) &&
-			status.equals(null))
+			orderId == null &&
+			createdAt == null &&
+			status == null)
 				return new Order();
 
 			return new Order(this);

@@ -40,8 +40,9 @@ public class Menu {
 	}
 
 	public static Menu getInstance(String rootDir) throws Exception {
-		if(instance.equals(null))
+		if(instance == null) {
 			instance = new Menu(rootDir);
+		}
 		return instance;
 	}
 
