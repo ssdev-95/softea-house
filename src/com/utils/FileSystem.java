@@ -14,7 +14,6 @@ public class FileSystem {
 			return Files.readAllLines(getFilePath(fileName));
 		} catch(IOException exception) {
 			System.out.println("[ERROR] "+exception.getMessage());
-
 			Files.createFile(getFilePath(fileName));				
 			return FileSystem.readFile(fileName);
 		}

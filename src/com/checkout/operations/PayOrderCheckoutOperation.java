@@ -28,7 +28,7 @@ public class PayOrderCheckoutOperation {
 		String orderId = sc.next();
 		int paymentMethod = 0;
 
-		if(orderId.isBlank() || orderId.isEmpty()) {
+		if(orderId == null || orderId.isBlank() || orderId.isEmpty()) {
 			sc.close();
 			throw new IOException(ioException);
 		}

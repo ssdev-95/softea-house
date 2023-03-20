@@ -14,40 +14,34 @@ public class ReverseOrderCheckoutOperation implements CheckoutOperation {
 	private static String createdAt;
 
 	public static void performOperation(
-		List<String> persistence,
-		String fileName,
-		Treasury treasury
-	) {
-		try {
-  		lastingOrders = new ArrayList<String>();
-  		Scanner sc = new Scanner(System.in);
+			List<String> persistence,
+			String fileName,
+			Treasury treasury
+	) throws IOException {
+  	lastingOrders = new ArrayList<String>();
+  	Scanner sc = new Scanner(System.in);
 
-  		System.out.printf(LOG);
-  		String orderId = sc.next();
+		System.out.printf(LOG);
+  	String orderId = sc.next();
 
-  		List<OrderItem> cart = findOrderItemsByOrderId(
-  			orderId,
-  			persistence
-  		);
+		List<OrderItem> cart = findOrderItemsByOrderId(
+				orderId, persistence);
 
-  		Order order = new Order.OrderBuilder()
-				.orderId(orderId)
-				.createdAt(Long.parseLong(createdAt))
-				.cart(cart)
-				.orderStatus(OrderStatus.REVERSED_ORDER)
-				.build();
+  	Order order = new Order.OrderBuilder()
+			.orderId(orderId)
+			.createdAt(Long.parseLong(createdAt))
+			.cart(cart)
+			.orderStatus(OrderStatus.REVERSED_ORDER)
+			.build();
 
-  		for(OrderItem orderItem : order.getCart()) {
-  			lastingOrders.add(orderItem.toString());
-  		}
-
-  		treasury.withdrawCash(order.getTotalPrice());
-
-  		order.save(fileName, lastingOrders);
-  		sc.close();
-		} catch (IOException exception) {
-			System.out.println(exception);
+  	for(OrderItem orderItem : order.getCart()) {
+  		lastingOrders.add(orderItem.toString());
 		}
+
+		treasury.withdrawCash(order.getTotalPrice());
+
+		order.save(fileName, lastingOrders);
+		sc.close();
 	}
 
 	private static List<OrderItem> findOrderItemsByOrderId(
