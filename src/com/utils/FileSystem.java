@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileSystem {
@@ -15,7 +16,7 @@ public class FileSystem {
 		} catch(IOException exception) {
 			System.out.println("[ERROR] "+exception.getMessage());
 			Files.createFile(getFilePath(fileName));				
-			return FileSystem.readFile(fileName);
+			return new ArrayList<String>();
 		}
 	}
 

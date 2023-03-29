@@ -22,54 +22,46 @@ public class Treasury {
 		return this.cash;
 	}
 
-	public void addCash(double ammount) {
+	public void addCash(double ammount) throws IOException {
 		this.cash += ammount;
 		sendCashToTreasury();
 
 		System.out.println("Updated cash: " + cash);
 	}
 
-	public void withdrawCash(double ammount) {
+	public void withdrawCash(double ammount) throws IOException {
 		this.cash -= ammount;
 		sendCashToTreasury();
 
 		System.out.println("Updated cash: " + cash);
 	}
 
-	public void sendCashToTreasury() {
-		try {
-			FileWriter fileWriter = new FileWriter(FILE_NAME);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
+	public void sendCashToTreasury() throws IOException {
+		FileWriter fileWriter = new FileWriter(FILE_NAME);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
 
-			String cashFormatted = String.format("%.2f", this.cash);
+		String cashFormatted = String.format("%.2f", this.cash);
 
-			printWriter.printf("ammount");
-			printWriter.printf(cashFormatted);
+		printWriter.printf("ammount");
+		printWriter.printf(cashFormatted);
 
-			printWriter.close();
-			fileWriter.close();
-		} catch(IOException exception) {
-			System.out.println(exception);
-		}
+		printWriter.close();
+		fileWriter.close();
 	}
 
-	public void getCashInfoFromTreasury() {
-		try {
-  		Boolean noCash = cash.isNaN() || cash.equals(null);
-			Path filePath = Path.of(FILE_NAME);
+	public void getCashInfoFromTreasury() throws IOException {
+		Boolean noCash = cash.isNaN() || cash.equals(null);
+		Path filePath = Path.of(FILE_NAME);
 
-			String cash = Files
-				.readAllLines(filePath)
-				.get(1);
+		String cash = Files
+			.readAllLines(filePath)
+			.get(1);
 
-			this.cash = noCash ? Double.parseDouble(cash) : 0.00;
-		} catch(IOException exception) {
-			System.out.println(exception);
-		}
+		this.cash = noCash ? Double.parseDouble(cash) : 0.00;
 	}
 
 	public static Treasury getInstance(String fileName) {
-		if(instance.equals(null))
+		if(instance == null)
 			instance = new Treasury(fileName);
 
 		return instance;

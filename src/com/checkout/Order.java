@@ -123,7 +123,8 @@ public class Order {
 
 	public void save(  String fileName, List<String> externalFile)
 			throws IOException {
-		List<String> skus = List.of(FIRST_LINE);
+		List<String> skus = new ArrayList<>();
+		//skus.add(FIRST_LINE);
 
 		for(String line : externalFile) {
 			int lineSteps = line.split(",").length;

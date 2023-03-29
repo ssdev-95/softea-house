@@ -21,7 +21,6 @@ public class CreateOrderCheckoutOperation
 		char hasNext = 'y';
 
 		Order order = new Order.OrderBuilder().build();
-		System.out.println(menu.products);
 
 		while(hasNext != 'n') {
 			if(hasNext != 'y') {

@@ -21,7 +21,7 @@ public class PayOrderCheckoutOperation {
 		Treasury treasury
 	) throws IOException {
 		finalCart = new ArrayList<String>();
-		String ioException = "Order id not supplied, try again.";
+		final String ioException = "Order id not supplied, try again.";
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("What's the order's id? ");
@@ -121,9 +121,6 @@ public class PayOrderCheckoutOperation {
 
 			list.add(orderItem);
 		}
-
-		//System.out.println("filtered: " + filteredList.size());
-		//System.out.println("rest: " + lastingOrders.size());
 
 		String[] firstItem = filteredList.get(0).split(",");
 		createdOrderAt = firstItem[4];
