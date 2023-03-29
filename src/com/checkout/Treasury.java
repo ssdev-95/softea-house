@@ -1,15 +1,14 @@
 package com.checkout;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.List;
+
+import com.utils.FileSystem;
 
 public class Treasury {
 	private static Treasury instance;
 	private final String FILE_NAME;
-	private Double cash = 0.00;
+	private Double cash = 0d;
 
 	private Treasury() { FILE_NAME = ""; }
 
@@ -37,27 +36,17 @@ public class Treasury {
 	}
 
 	public void sendCashToTreasury() throws IOException {
-		FileWriter fileWriter = new FileWriter(FILE_NAME);
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-
 		String cashFormatted = String.format("%.2f", this.cash);
-
-		printWriter.printf("ammount");
-		printWriter.printf(cashFormatted);
-
-		printWriter.close();
-		fileWriter.close();
+		FileSystem.save(
+				FILE_NAME, List.of("ammount", cashFormatted));
 	}
 
 	public void getCashInfoFromTreasury() throws IOException {
-		Boolean noCash = cash.isNaN() || cash.equals(null);
-		Path filePath = Path.of(FILE_NAME);
+		String treasuryCash = FileSystem.readFile(FILE_NAME).get(1);
 
-		String cash = Files
-			.readAllLines(filePath)
-			.get(1);
-
-		this.cash = noCash ? Double.parseDouble(cash) : 0.00;
+		if(treasuryCash != null) {
+			cash += Double.parseDouble(treasuryCash);
+		}
 	}
 
 	public static Treasury getInstance(String fileName) {

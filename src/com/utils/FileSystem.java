@@ -14,7 +14,7 @@ public class FileSystem {
 		try {
 			return Files.readAllLines(getFilePath(fileName));
 		} catch(IOException exception) {
-			System.out.println("[ERROR] "+exception.getMessage());
+			System.out.println("[ERROR] " + exception.getMessage());
 			Files.createFile(getFilePath(fileName));				
 			return new ArrayList<String>();
 		}
@@ -31,7 +31,11 @@ public class FileSystem {
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 
 		for(String line : items) {
-			printWriter.printf('\n' + line);
+			if(items.indexOf(line) == 0) {
+				printWriter.printf(line);
+			} else {
+				printWriter.printf('\n' + line);
+			} 
 		}
 
 		printWriter.close();

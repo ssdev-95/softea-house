@@ -127,6 +127,7 @@ public class Order {
 		//skus.add(FIRST_LINE);
 
 		for(String line : externalFile) {
+			System.out.println(line);
 			int lineSteps = line.split(",").length;
 
 			if(lineSteps <= 4) {
