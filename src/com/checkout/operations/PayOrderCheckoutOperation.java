@@ -114,8 +114,8 @@ public class PayOrderCheckoutOperation {
 			OrderItem orderItem = new OrderItem.OrderItemBuilder()
 				.prodUnityPrice(Double.parseDouble(itemSplt[2]))
 				.prodQuantity(Integer.parseInt(itemSplt[3]))
-				.prodOrderId(itemSplt[1])
-				.prodId(itemSplt[0])
+				.prodOrderId(itemSplt[0])
+				.prodId(itemSplt[1])
 				.prodAmount()
 				.build();
 

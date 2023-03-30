@@ -45,8 +45,8 @@ public class Checkout {
 			treasury.getCashInfoFromTreasury();
 		} catch(Exception error) {
 			System.out.println(error);
-			//throw new CheckoutInitException(
-					//"com.checkout.Checkout", error);
+			throw new CheckoutInitException(
+					"com.checkout.Checkout", error);
 		}
 	}
 

@@ -42,10 +42,10 @@ public class Treasury {
 	}
 
 	public void getCashInfoFromTreasury() throws IOException {
-		String treasuryCash = FileSystem.readFile(FILE_NAME).get(1);
+		List<String> treasuryFile = FileSystem.readFile(FILE_NAME);
 
-		if(treasuryCash != null) {
-			cash += Double.parseDouble(treasuryCash);
+		if(treasuryFile.size() >= 2) {
+			cash += Double.parseDouble(treasuryFile.get(1));
 		}
 	}
 

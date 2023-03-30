@@ -3,7 +3,7 @@ import java.nio.file.Paths;
 
 import com.checkout.Checkout;
 
-class Main {
+public class Main {
 	private static final String INIT_LOG = ""+
 			"Welcome to my SofTea House\n"+
 			"Here we do what js libs don't: "+
