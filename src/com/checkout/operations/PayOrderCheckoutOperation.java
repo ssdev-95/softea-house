@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.checkout.enums.*;
+import com.exception.CheckoutOperationException;
 import com.checkout.*;
 
 public class PayOrderCheckoutOperation {
@@ -21,7 +22,7 @@ public class PayOrderCheckoutOperation {
 		Treasury treasury
 	) throws IOException {
 		finalCart = new ArrayList<String>();
-		final String ioException = "Order id not supplied, try again.";
+		final String cException = "Order id not supplied, try again.";
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("What's the order's id? ");
@@ -30,10 +31,11 @@ public class PayOrderCheckoutOperation {
 
 		if(orderId == null || orderId.isBlank() || orderId.isEmpty()) {
 			sc.close();
-			throw new IOException(ioException);
+			throw new CheckoutOperationException(cException);
 		}
 
-		List<OrderItem> mappedList = findOrderItemsByOrderId(orderId, persistence);
+		List<OrderItem> mappedList = findOrderItemsByOrderId(
+				orderId, persistence);
 
 		Order order = new Order.OrderBuilder()
 			.orderId(orderId)

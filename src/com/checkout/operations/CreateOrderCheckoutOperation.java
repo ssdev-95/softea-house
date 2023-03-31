@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.product.*;
 import com.checkout.*;
+import com.exception.CheckoutOperationException;
 
 public class CreateOrderCheckoutOperation
 	  implements CheckoutOperation {
@@ -14,7 +15,7 @@ public class CreateOrderCheckoutOperation
 		List<String> persistence,
 		String fileName,
 		Menu menu
-	) throws RuntimeException, IOException {
+	) throws IOException {
 		menu.listProducts();
 
 		Scanner sc = new Scanner(System.in);
@@ -25,8 +26,8 @@ public class CreateOrderCheckoutOperation
 		while(hasNext != 'n') {
 			if(hasNext != 'y') {
 				sc.close();
-				String LOG = "Option not allowed: '%1$s'";
-				throw new RuntimeException(String.format(LOG, hasNext));
+				String LOG = "Option not allowed: '"+hasNext+"'";
+				throw new CheckoutOperationException(LOG);
 			}
 
 			System.out.printf("What should you drink next? ");  
