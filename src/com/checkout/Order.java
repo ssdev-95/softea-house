@@ -85,7 +85,7 @@ public class Order {
 		}
 
 		String totalLog = String.format(
-			formatSummary(),date,id,strItems,cart.size(),totalPrice);
+			formatSummary(),date,id,strItems,cart.size(),totalPrice, order_status.toString());
 
 		System.out.println(totalLog);
 	}
@@ -98,8 +98,7 @@ public class Order {
 	
 		String formatedDate = DateTimeFormatter
 			.ofPattern("E MMM dd, yyyy - HH:mm")
-			.format(date)
-			.concat(" [UTC]");
+			.format(date);
 
 		return formatedDate;
 	}
@@ -107,9 +106,10 @@ public class Order {
 	private String formatSummary() {
 		String summary = "" +
  "===========================================================\n"+
- "   Casa das Teas                                    %1$s   \n"+
+ "   Casa das Teas               %1$s   \n"+
  "-----------------------------------------------------------\n"+
- "   Order  -  %2$s                                          \n"+
+ "   Order  -  %2$s\n" +
+ "   status:  %6$s\n"+
  "===========================================================\n"+
  "%3$s"+
  "===========================================================\n"+
