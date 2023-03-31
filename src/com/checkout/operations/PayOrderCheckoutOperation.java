@@ -107,7 +107,7 @@ public class PayOrderCheckoutOperation {
 		* @author Saloma Tech
 	  * @implNote
     * ORDER ITEM SHAPE
-    * order_id,prod_id,unity_price,prod_quantity,created_at,order_status
+		* order_id,prod_id,unity_price,prod_quantity,created_at,order_status
    */
 
 		for(String item : filteredList) {
