@@ -13,8 +13,9 @@
 - [x] Update orders (Pay/Reverse).
 - [x] Persist orders.
 - [x] Show daily revenue from a given date, defaults to current date.
-- [ ] Retrieve info about an order.
+- [x] Retrieve info about an order.
 - [x] Cash system.
+- [x] Prevent queries for current/future dates;
 
 ## Roadmap (Subject to changes)
 
@@ -24,7 +25,7 @@
 - [ ] Create an web/mobile app to consume this Api.
 - [ ] Authentication, only logged employees should perform checkout operations.
 
-## Techa used
+## Techs used
 
 - [x] Java. :D
 
