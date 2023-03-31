@@ -12,8 +12,9 @@
 - [x] Create orders.
 - [x] Update orders (Pay/Reverse).
 - [x] Persist orders.
+- [x] Show daily revenue from a given date, defaults to current date.
 - [ ] Retrieve info about an order.
-- [ ] Cash system.
+- [x] Cash system.
 
 ## Roadmap (Subject to changes)
 
