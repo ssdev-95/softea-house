@@ -1,16 +1,21 @@
 package com.checkout.operations;
 
+
+
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static java.util.stream.Collectors.toList;
+
+import com.exception.*;
 import com.checkout.*;
 import com.checkout.enums.OrderStatus;
 
 public class ReverseOrderCheckoutOperation implements CheckoutOperation {
-	private static  final String LOG = "What order you would like to reverse? (id)  ";
-	private static List<String> lastingOrders;
+	private static final String LOG = "What order you would like to reverse? (id)\n";
+	private static List<String> lastingOrders = new ArrayList<String>();
 	private static String createdAt;
 
 	public static void performOperation(
@@ -18,7 +23,6 @@ public class ReverseOrderCheckoutOperation implements CheckoutOperation {
 			String fileName,
 			Treasury treasury
 	) throws IOException {
-  	lastingOrders = new ArrayList<String>();
   	Scanner sc = new Scanner(System.in);
 
 		System.out.printf(LOG);
@@ -51,27 +55,33 @@ public class ReverseOrderCheckoutOperation implements CheckoutOperation {
 		List<String> filteredList = orders
 			.stream()
 			.filter(str -> str.contains(id))
-			.toList();
+			.collect(toList());
 
 		lastingOrders = orders
 			.stream()
 			.filter(str -> !str.contains(id))
-			.toList();
+			.collect(toList());
 
 		createdAt = filteredList.get(0).split(",")[4];
+		final String paidStatus = OrderStatus.PAID_ORDER.toString();
 
 		for(String order : filteredList) {
-			String[] itemSplt = order.split(",");
+			if(order.contains(paidStatus)) {
+				String[] itemSplt = order.split(",");
 
-			OrderItem orderItem = new OrderItem.OrderItemBuilder()
-				.prodUnityPrice(Double.parseDouble(itemSplt[2]))
-				.prodQuantity(Integer.parseInt(itemSplt[3]))
-				.prodOrderId(itemSplt[1])
-				.prodId(itemSplt[0])
-				.prodAmount()
-				.build();
+				OrderItem orderItem = new OrderItem.OrderItemBuilder()
+					.prodUnityPrice(Double.parseDouble(itemSplt[2]))
+					.prodQuantity(Integer.parseInt(itemSplt[3]))
+					.prodOrderId(itemSplt[0])
+					.prodId(itemSplt[1])
+					.prodAmount()
+					.build();
 
-			mappedOrders.add(orderItem);
+				mappedOrders.add(orderItem);
+			} else {
+				throw new CheckoutOperationException(
+						"Cannot reverse not paid order: " + id);
+			}
 		}
 
 		return mappedOrders;

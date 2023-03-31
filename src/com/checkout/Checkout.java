@@ -3,12 +3,16 @@ package com.checkout;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.checkout.operations.*;
+import com.exception.CheckoutInitException;
 import com.product.*;
 import com.utils.FileSystem;
 
 public class Checkout {
+	private final String filter = "" +
+	"order_id,tea_id,unity_price,quantity,created_at,order_status";
 	private final String INIT_LOG = ""+
 		"Available operations:\n"+
 		"0. Buy something;\n"+
@@ -24,7 +28,7 @@ public class Checkout {
 	private Treasury treasury;
 	public List<String> externalFile;
 
-	int operation = 0;
+	private int operation = 0;
 
 	private Checkout() { FILE_NAME =  ""; }
 
@@ -33,13 +37,16 @@ public class Checkout {
 
 		try {
 			menu = Menu.getInstance(rootDir);
-			externalFile = FileSystem.readFile(FILE_NAME);
-
+			externalFile = FileSystem.readFile(FILE_NAME)
+				.stream()
+				.filter(t-> !t.contains(filter))
+				.collect(Collectors.toList());
 			treasury = Treasury.getInstance(rootDir);
 			treasury.getCashInfoFromTreasury();
 		} catch(Exception error) {
-			System.out.println("Failed to init checkout session.");
 			System.out.println(error);
+			throw new CheckoutInitException(
+					"com.checkout.Checkout", error);
 		}
 	}
 
