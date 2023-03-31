@@ -18,7 +18,8 @@ public class Checkout {
 		"0. Buy something;\n"+
 		"1. Close order;\n"+
 		"2. Reverse an Order;\n"+
-		"3. Get daily revenues;\n\n"+
+		"3. Get daily revenues;\n"+
+		"4. Get a order info by it's id;\n\n" +
 		"What's your need? ";
 	
 	private static Checkout instance;
@@ -79,6 +80,10 @@ public class Checkout {
 				break;
 			case 3:
 				CloseCheckoutOperation
+					.performOperation(externalFile, FILE_NAME, menu);
+				break;
+			case 4:
+				RetrieveOrderInfoCheckoutOperation
 					.performOperation(externalFile, FILE_NAME, menu);
 				break;
 			default:

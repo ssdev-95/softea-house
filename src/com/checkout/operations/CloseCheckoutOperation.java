@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.checkout.enums.OrderStatus;
+import com.exception.CheckoutOperationException;
 import com.product.Menu;
 
 public class CloseCheckoutOperation
@@ -23,6 +24,7 @@ public class CloseCheckoutOperation
 		String fileName,   
 		Menu menu
 	) throws IOException {
+		LocalDate localDate;
 		Scanner sc = new Scanner(System.in);
 
 		System.out.print("Show daily revenue from: ");
@@ -33,19 +35,21 @@ public class CloseCheckoutOperation
 		}
 
 		if(whenFromGetRevenueInfo == "now") {
-			findOrderByDate(LocalDate.now(), persistence);
+			localDate = LocalDate.now();
 		} else {
 			List<Integer> date = Stream.of(
 					whenFromGetRevenueInfo.split("/"))
 				.map(Integer::parseInt)
 				.collect(Collectors.toList());
 
-			findOrderByDate(
-					LocalDate.of(date.get(2), date.get(1), date.get(0)),
-					persistence);
+			localDate = LocalDate.of(
+					date.get(2), date.get(1), date.get(0));
 		}
 
-		showResumee(whenFromGetRevenueInfo);
+		if(isFutureDate(localDate)) {
+			findOrderByDate(localDate, persistence);
+			showResumee(whenFromGetRevenueInfo);
+		}
 		sc.close();
 	}
 
@@ -70,7 +74,7 @@ public class CloseCheckoutOperation
  "            orders:  " + countOrders() + "\n" +
  "===========================================================\n"+
  "%1$s" +
- "===========================================================";
+ "\n===========================================================";
 		if(orderItems.size() < 1) {
 			LOG = String.format(
 					LOG, "No data found for parameter(s): " + parameter);
@@ -83,7 +87,7 @@ public class CloseCheckoutOperation
 			 "   Brute receipts:   ------------------------    %.2f\n"+
 			 "   Reverses:         ------------------------    %1s\n"+
 			 "   Reverse ammout:   ------------------------    %.2f\n\n"+
-			 "   Liquid revenue:   ------------------------    %.2f\n",
+			 "   Liquid revenue:   ------------------------    %.2f",
 			 bRevenue,
 			 countReversedOrders(),
 			 rvAmount,
@@ -144,5 +148,17 @@ public class CloseCheckoutOperation
 		}
 
 		return ammount;
+	}
+
+	private static boolean isFutureDate(LocalDate date) {
+		int isFuture = date.compareTo(LocalDate.now());
+
+		if(isFuture == 0)  throw new CheckoutOperationException(
+				"Cannot query for revenues before checkout is closed.");
+
+		if(isFuture == 1)  throw new CheckoutOperationException(
+				"Cannot query for future revenues.");
+
+		return isFuture == -1;
 	}
 }
