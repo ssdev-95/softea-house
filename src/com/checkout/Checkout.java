@@ -16,8 +16,9 @@ public class Checkout {
 		"0. Buy something;\n"+
 		"1. Close order;\n"+
 		"2. Reverse an Order;\n"+
-		"3. Get daily revenues;\n"+
-		"4. Get a order info by it's id;\n\n" +
+		"3. Cancel an Order;\n"+
+		"4. Get daily revenues;\n"+
+		"5. Get a order info by it's id;\n\n" +
 		"What's your need? ";
 	
 	private static Checkout instance;
@@ -74,10 +75,14 @@ public class Checkout {
 						externalFile, FILE_NAME);
 				break;
 			case 3:
-				CloseCheckoutOperation.closeCheckout(
+				CancelOrderCheckoutOperation.cancelOrder(
 						externalFile, FILE_NAME);
 				break;
 			case 4:
+				CloseCheckoutOperation.closeCheckout(
+						externalFile, FILE_NAME);
+				break;
+			case 5:
 				RetrieveOrderInfoCheckoutOperation.retrieveOrder(
 						externalFile, FILE_NAME);
 				break;
