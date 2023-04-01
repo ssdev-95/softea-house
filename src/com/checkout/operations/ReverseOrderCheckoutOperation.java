@@ -21,7 +21,6 @@ public class ReverseOrderCheckoutOperation
 			List<String> persistence,
 			String fileName
 	) throws IOException {
-		final Treasury treasury = Treasury.getInstance();
   	Scanner sc = new Scanner(System.in);
 
 		System.out.printf(LOG);
@@ -41,7 +40,9 @@ public class ReverseOrderCheckoutOperation
   		lastingOrders.add(orderItem.toString());
 		}
 
-		treasury.withdrawCash(order.getTotalPrice());
+		Treasury
+			.getInstance()
+			.withdrawCash(order.getTotalPrice());
 
 		order.save(fileName, lastingOrders);
 		sc.close();
