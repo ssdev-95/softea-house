@@ -1,6 +1,5 @@
 package com.checkout.operations;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,11 +12,11 @@ import com.product.Menu;
 
 public class RetrieveOrderInfoCheckoutOperation
 	  implements CheckoutOperation {
-	public static void performOperation(
+	public static void retrieveOrder(
 			List<String> persistence,
-			String fileName,
-			Menu menu) throws IOException {
+			String fileName) throws Exception {
 		Scanner sc = new Scanner(System.in);
+		final Menu menu = Menu.getInstance();
 
 		System.out.println("What's the order's id:\n");
 		String orderId = sc.nextLine();

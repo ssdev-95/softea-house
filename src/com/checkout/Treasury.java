@@ -10,11 +10,8 @@ public class Treasury {
 	private final String FILE_NAME;
 	private Double cash = 0d;
 
-	private Treasury() { FILE_NAME = ""; }
-
-	private Treasury(String fileName) {
-		FILE_NAME = String
-			.format("%1$s/treasury.csv", fileName);
+	private Treasury() {
+		FILE_NAME = FileSystem.getRootPath("treasury.csv");
 	}
 
 	public Double getCash() {
@@ -49,9 +46,9 @@ public class Treasury {
 		}
 	}
 
-	public static Treasury getInstance(String fileName) {
+	public static Treasury getInstance() {
 		if(instance == null)
-			instance = new Treasury(fileName);
+			instance = new Treasury();
 
 		return instance;
 	}

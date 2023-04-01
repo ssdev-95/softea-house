@@ -1,13 +1,11 @@
 package com.checkout;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import com.checkout.operations.*;
 import com.exception.CheckoutInitException;
-import com.product.*;
 import com.utils.FileSystem;
 
 public class Checkout {
@@ -25,25 +23,22 @@ public class Checkout {
 	private static Checkout instance;
 	private final String FILE_NAME;
 
-	private Menu menu;
-	private Treasury treasury;
 	public List<String> externalFile;
 
 	private int operation = 0;
 
-	private Checkout() { FILE_NAME =  ""; }
-
-	private Checkout(String rootDir) {
-		FILE_NAME = String.format("%1$s/orders.csv", rootDir);
+	private Checkout() {
+		FILE_NAME = FileSystem.getRootPath("orders.csv");
 
 		try {
-			menu = Menu.getInstance(rootDir);
 			externalFile = FileSystem.readFile(FILE_NAME)
 				.stream()
 				.filter(t-> !t.contains(filter))
 				.collect(Collectors.toList());
-			treasury = Treasury.getInstance(rootDir);
-			treasury.getCashInfoFromTreasury();
+
+			Treasury
+				.getInstance()
+				.getCashInfoFromTreasury();
 		} catch(Exception error) {
 			System.out.println(error);
 			throw new CheckoutInitException(
@@ -51,15 +46,15 @@ public class Checkout {
 		}
 	}
 
-	public static Checkout getInstance(String rootDir) {
+	public static Checkout getInstance() {
 		if(instance == null) {
-			instance = new Checkout(rootDir);
+			instance = new Checkout();
 		}
 
 		return instance;
 	}
 
-	public void init() throws IOException {
+	public void init() throws Exception {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.printf(INIT_LOG);
@@ -67,24 +62,24 @@ public class Checkout {
 
 		switch(operation) {
 			case 0:
-				CreateOrderCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, menu);
+				CreateOrderCheckoutOperation.placeOrder(
+						externalFile, FILE_NAME);
 				break;
 			case 1:
-				PayOrderCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, treasury);
+				PayOrderCheckoutOperation.payOrder(
+						externalFile, FILE_NAME);
 				break;
 			case 2:
-				ReverseOrderCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, treasury);
+				ReverseOrderCheckoutOperation.reverseOrder(
+						externalFile, FILE_NAME);
 				break;
 			case 3:
-				CloseCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, menu);
+				CloseCheckoutOperation.closeCheckout(
+						externalFile, FILE_NAME);
 				break;
 			case 4:
-				RetrieveOrderInfoCheckoutOperation
-					.performOperation(externalFile, FILE_NAME, menu);
+				RetrieveOrderInfoCheckoutOperation.retrieveOrder(
+						externalFile, FILE_NAME);
 				break;
 			default:
 				System.out.println("Operation not allowed, contact sysadmin.");

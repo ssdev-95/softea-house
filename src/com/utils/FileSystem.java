@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,5 +41,15 @@ public class FileSystem {
 
 		printWriter.close();
 		fileWriter.close();
+	}
+
+	public static String getRootPath(String fileName) {
+		String rootPath = Paths.get(".")
+			.normalize()
+			.toAbsolutePath()
+			.getParent()
+			.toString();
+
+		return String.format("%1$s/assets/%2$s", rootPath, fileName);
 	}
 }

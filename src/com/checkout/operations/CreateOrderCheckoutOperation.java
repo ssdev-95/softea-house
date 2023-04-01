@@ -1,6 +1,5 @@
 package com.checkout.operations;
 
-import java.io.IOException;
 import java.util.List;
 
 import java.util.Scanner;
@@ -11,11 +10,11 @@ import com.exception.CheckoutOperationException;
 
 public class CreateOrderCheckoutOperation
 	  implements CheckoutOperation {
-	public static void performOperation(
+	public static void placeOrder(
 		List<String> persistence,
-		String fileName,
-		Menu menu
-	) throws IOException {
+		String fileName
+	) throws Exception {
+		final Menu menu = Menu.getInstance();
 		menu.listProducts();
 
 		Scanner sc = new Scanner(System.in);
