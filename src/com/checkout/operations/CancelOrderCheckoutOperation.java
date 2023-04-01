@@ -11,13 +11,13 @@ import com.exception.*;
 import com.checkout.*;
 import com.checkout.enums.OrderStatus;
 
-public class ReverseOrderCheckoutOperation
+public class CancelOrderCheckoutOperation
 	  implements CheckoutOperation {
-	private static final String LOG = "What order you would like to reverse? (id)\n";
+	private static final String LOG = "What order you would like to cancel? (id)\n";
 	private static List<String> lastingOrders = new ArrayList<String>();
 	private static String createdAt;
 
-	public static void reverseOrder(
+	public static void cancelOrder(
 			List<String> persistence,
 			String fileName
 	) throws IOException {
@@ -33,16 +33,12 @@ public class ReverseOrderCheckoutOperation
 			.orderId(orderId)
 			.createdAt(Long.parseLong(createdAt))
 			.cart(cart)
-			.orderStatus(OrderStatus.REVERSED_ORDER)
+			.orderStatus(OrderStatus.CANCELED_ORDER)
 			.build();
 
   	for(OrderItem orderItem : order.getCart()) {
   		lastingOrders.add(orderItem.toString());
 		}
-
-		Treasury
-			.getInstance()
-			.withdrawCash(order.getTotalPrice());
 
 		order.save(fileName, lastingOrders);
 		sc.close();
@@ -63,7 +59,7 @@ public class ReverseOrderCheckoutOperation
 			.collect(toList());
 
 		createdAt = filteredList.get(0).split(",")[4];
-		final String paidStatus = OrderStatus.PAID_ORDER.toString();
+		final String paidStatus = OrderStatus.OPEN_ORDER.toString();
 
 		for(String order : filteredList) {
 			if(order.contains(paidStatus)) {
@@ -80,7 +76,7 @@ public class ReverseOrderCheckoutOperation
 				mappedOrders.add(orderItem);
 			} else {
 				throw new CheckoutOperationException(
-						"Cannot reverse not paid order: " + id);
+						"Cannot cancel paid/reversed order: " + id);
 			}
 		}
 

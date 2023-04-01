@@ -17,7 +17,12 @@ import com.utils.FileSystem;
 import com.checkout.enums.*;
 
 public class Order {
-	private final String FIRST_LINE = "order_id,tea_id,unity_price,quantity,created_at,order_status";
+	private final String FIRST_LINE = "order_id,"+
+		                                "tea_id,"+
+																		"unity_price,"+
+																		"quantity,"+
+																		"created_at,"+
+																		"order_status";
   private String id;
   private List<OrderItem> cart;
 	private Long createdAt;
@@ -127,7 +132,6 @@ public class Order {
 		skus.add(FIRST_LINE);
 
 		for(String line : externalFile) {
-			System.out.println(line);
 			int lineSteps = line.split(",").length;
 
 			if(lineSteps <= 4) {

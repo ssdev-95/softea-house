@@ -10,6 +10,13 @@ import com.exception.CheckoutOperationException;
 import com.checkout.*;
 
 public class PayOrderCheckoutOperation {
+
+	private static final String LOG = "" +
+		 "Payment methods:\n" +
+		 "0. Cash[Experimental]\n" +
+		 "1. Credit[Unnavailable]\n" +
+		 "2. Pix[Unnavailable]\n\n" +
+		 "Which method you mayuse? ";
 	private static OrderStatus status;
 	private static String createdOrderAt;
 	private static List<String> lastingOrders;
@@ -46,7 +53,7 @@ public class PayOrderCheckoutOperation {
 
 		System.out.println(
 			"Order billing ammount: " + order.getTotalPrice());
-		System.out.printf("Payment methods:\n0. Cash[Experimental]\n1. Credit[Unnavailable]\n2. Pix[Unnavailable]\n\nWhich method you may use? ");
+		System.out.printf(LOG);
 
 		paymentMethod = sc.nextInt();
 
