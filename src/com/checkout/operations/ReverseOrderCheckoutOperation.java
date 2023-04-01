@@ -1,7 +1,5 @@
 package com.checkout.operations;
 
-
-
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
@@ -13,16 +11,17 @@ import com.exception.*;
 import com.checkout.*;
 import com.checkout.enums.OrderStatus;
 
-public class ReverseOrderCheckoutOperation implements CheckoutOperation {
+public class ReverseOrderCheckoutOperation
+	  implements CheckoutOperation {
 	private static final String LOG = "What order you would like to reverse? (id)\n";
 	private static List<String> lastingOrders = new ArrayList<String>();
 	private static String createdAt;
 
-	public static void performOperation(
+	public static void reverseOrder(
 			List<String> persistence,
-			String fileName,
-			Treasury treasury
+			String fileName
 	) throws IOException {
+		final Treasury treasury = Treasury.getInstance();
   	Scanner sc = new Scanner(System.in);
 
 		System.out.printf(LOG);

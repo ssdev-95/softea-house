@@ -1,5 +1,4 @@
 import java.lang.Exception;
-import java.nio.file.Paths;
 
 import com.checkout.Checkout;
 
@@ -11,16 +10,7 @@ public class Main {
 
 	public static void main(String...args) {
 		try {
-			String rootPath = Paths
-				.get(".")
-				.normalize()
-				.toAbsolutePath()
-				.getParent()
-				.toString();
-
-			String rootDir = String.format("%1$s/assets", rootPath);
-			Checkout checkout = Checkout.getInstance(rootDir);
-			
+			Checkout checkout = Checkout.getInstance();
 			System.out.println(INIT_LOG);
 			checkout.init();
 		} catch(Exception exception) {

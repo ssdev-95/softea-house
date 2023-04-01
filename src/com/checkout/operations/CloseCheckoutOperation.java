@@ -13,16 +13,14 @@ import java.util.stream.Stream;
 
 import com.checkout.enums.OrderStatus;
 import com.exception.CheckoutOperationException;
-import com.product.Menu;
 
 public class CloseCheckoutOperation
 	  implements CheckoutOperation {
 	private static List<String> orderItems = new ArrayList<>();
 
-	public static void performOperation(
+	public static void closeCheckout(
 		List<String> persistence,
-		String fileName,   
-		Menu menu
+		String fileName
 	) throws IOException {
 		LocalDate localDate;
 		Scanner sc = new Scanner(System.in);

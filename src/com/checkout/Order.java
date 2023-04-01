@@ -121,7 +121,7 @@ public class Order {
 		return summary;
 	}
 
-	public void save(  String fileName, List<String> externalFile)
+	public void save(String fileName, List<String> externalFile)
 			throws IOException {
 		List<String> skus = new ArrayList<>();
 		skus.add(FIRST_LINE);

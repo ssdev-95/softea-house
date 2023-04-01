@@ -12,16 +12,9 @@ public class Menu {
 
 	private static Menu instance;
 
-	private Menu() {}
+	private Menu() throws Exception {
+		FILE_NAME = FileSystem.getRootPath("tea.menu.csv");
 
-	private Menu(String rootDir) throws Exception {
-		FILE_NAME = String.format("%1$s/tea.menu.csv", rootDir);
-
-		/**
-		 * @Author Saloma Tech
-		 * PRODUCT SHAPE IN MENU;
-		 * COD,SKU,UNITY_PRICE,PICTURE_URL;
-		*/
 		products = new ArrayList<Product>();
 
 		for (String rowTea : FileSystem.readFile(FILE_NAME)) {
@@ -39,9 +32,9 @@ public class Menu {
 		}
 	}
 
-	public static Menu getInstance(String rootDir) throws Exception {
+	public static Menu getInstance() throws Exception {
 		if(instance == null) {
-			instance = new Menu(rootDir);
+			instance = new Menu();
 		}
 		return instance;
 	}

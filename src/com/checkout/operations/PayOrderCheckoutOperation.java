@@ -16,11 +16,11 @@ public class PayOrderCheckoutOperation {
 	private static List<String> filteredList;
 	private static List<String> finalCart;
 
-	public static void performOperation(
+	public static void payOrder(
 		List<String> persistence,
-		String fileName,
-		Treasury treasury
+		String fileName
 	) throws IOException {
+		final Treasury treasury = Treasury.getInstance();
 		finalCart = new ArrayList<String>();
 		final String cException = "Order id not supplied, try again.";
 		Scanner sc = new Scanner(System.in);
@@ -102,13 +102,6 @@ public class PayOrderCheckoutOperation {
 			.stream()
 			.filter(str -> !str.contains(id))
 			.toList();
-
-	/**
-		* @author Saloma Tech
-	  * @implNote
-    * ORDER ITEM SHAPE
-		* order_id,prod_id,unity_price,prod_quantity,created_at,order_status
-   */
 
 		for(String item : filteredList) {
 			String[] itemSplt = item.split(",");
