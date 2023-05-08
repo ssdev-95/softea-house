@@ -19,7 +19,7 @@
 
 ## Roadmap (Subject to changes)
 
-- [ ] Includes some QRCode logic.
+- [ ] Includes some QR Code logic.
 - [ ] Persist using a database.
 - [ ] Become an Api.
 - [ ] Create an web/mobile app to consume this Api.
@@ -27,7 +27,8 @@
 
 ## Techs used
 
-- [x] Java. :D
+- [x] Java. xD
+- [x] Spring boot
 
 ## How to run locally
 
