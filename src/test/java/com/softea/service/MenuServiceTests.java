@@ -16,11 +16,13 @@ import com.softea.repository.ProductRepository;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MenuServiceTests {
 	private MenuService menu;
+	
 	@BeforeAll
 	void setup() {
 		ProductRepository pr = new ProductRepository();
 		menu = new MenuService(pr);
 	}
+
 	@Test
 	void should_not_find_a_product() {
 		Assertions.assertThrows(
@@ -44,6 +46,15 @@ public class MenuServiceTests {
 		ProductDTO dto = new ProductDTO(null, null);
 		Assertions.assertThrows(
 			Exception.class,
+			()->menu.saveProduct(dto));
+	}
+
+	@Test
+	void should_save_a_product_without_fail() {
+		ProductDTO dto = new ProductDTO()
+			.setSku("Black Tea")
+			.setPrice(7.95d);
+		Assertions.assertDoesNotThrow(
 			()->menu.saveProduct(dto));
 	}
 }

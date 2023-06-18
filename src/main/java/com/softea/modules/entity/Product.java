@@ -24,4 +24,10 @@ public class Product {
 	private String id;
 	private String sku;
 	private double price;
+
+	@Override
+	public String toString() {
+	  return String.format("{id:%s,sku:%s,price:%s}",
+		id, sku, price);
+	}
 }
