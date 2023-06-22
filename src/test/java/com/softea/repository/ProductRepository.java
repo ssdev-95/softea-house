@@ -8,7 +8,6 @@ package com.softea.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.softea.modules.dto.ProductDTO;
 import com.softea.modules.entity.Product;
 import com.softea.modules.repository.IProductRepository;

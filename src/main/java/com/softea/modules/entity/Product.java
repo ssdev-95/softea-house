@@ -5,11 +5,14 @@
 
 package com.softea.modules.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +28,13 @@ public class Product {
 	private String sku;
 	private double price;
 
+	@JsonIgnore
+	@ManyToMany(mappedBy="orderItems")
+	private List<Order> orders;
+
 	@Override
 	public String toString() {
-	  return String.format("{id:%s,sku:%s,price:%s}",
-		id, sku, price);
+		final String base = "{id:%s,sku:%s,price:%s}";
+	  return String.format(base, id, sku, price);
 	}
 }
