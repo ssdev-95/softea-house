@@ -9,7 +9,9 @@ import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
 import com.softea.modules.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class OrderService {
 	private final IOrderRepository orderRepository;
