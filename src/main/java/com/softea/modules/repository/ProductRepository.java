@@ -5,6 +5,7 @@
 
 package com.softea.modules.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.softea.modules.dto.ProductDTO;
@@ -16,6 +17,11 @@ import lombok.RequiredArgsConstructor;
 public class ProductRepository
 	  implements IProductRepository {
 	private final ProductJPARepository jpaRepository;
+
+	@Override
+	public List<Product> listProducts() {
+		return jpaRepository.findAll();
+	}
 
 	@Override
 	public Optional<Product> findById(String id) {

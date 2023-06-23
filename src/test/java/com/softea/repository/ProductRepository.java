@@ -18,6 +18,12 @@ public class ProductRepository
 	public ProductRepository() {
 		prods = new ArrayList<>();
 	}
+
+	@Override
+	public List<Product> listProducts() {
+	  return prods;
+	}
+
 	@Override
 	public Optional<Product> findById(String id) {
 		return prods
