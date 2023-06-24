@@ -7,10 +7,10 @@ package com.softea.modules.service;
 
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
+import com.softea.modules.handler.OrderNotFoundException;
 import com.softea.modules.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +26,10 @@ public class OrderService {
 		return orderRepository.findAllByTable(table);
 	}
 
-	public Optional<Order> retrieveOrder(String id) {
-		return orderRepository.findById(id);
+	public Order retrieveOrder(String id) {
+		var order = orderRepository.findById(id)
+			.orElseThrow(OrderNotFoundException::new);
+		return order;
 	}
 	
 	public Order placeOrder(OrderDTO dto) {

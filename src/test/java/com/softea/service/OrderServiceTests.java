@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import com.softea.modules.handler.OrderNotFoundException;
 import com.softea.modules.repository.IOrderRepository;
 import com.softea.modules.service.OrderService;
 import com.softea.repository.OrderRepository;
@@ -35,5 +37,12 @@ public class OrderServiceTests {
 	void should_add_an_order() {
 		Assertions.assertDoesNotThrow(
 			()->orderService.placeOrder(create()));
+	}
+
+	@Test
+	void should_not_find_an_order() {
+		Assertions.assertThrows(
+			OrderNotFoundException.class,
+			()->orderService.retrieveOrder("jqjejdjw"));
 	}
 }

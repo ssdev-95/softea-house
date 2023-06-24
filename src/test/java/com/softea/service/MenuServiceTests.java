@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import com.softea.modules.dto.ProductDTO;
+import com.softea.modules.handler.ProductNotFoundException;
 import com.softea.modules.service.MenuService;
 import com.softea.repository.ProductRepository;
 
@@ -26,7 +27,7 @@ public class MenuServiceTests {
 	@Test
 	void should_not_find_a_product() {
 		Assertions.assertThrows(
-			Exception.class,
+			ProductNotFoundException.class,
 			()->menu.getProduct("12345"));
 	}
 

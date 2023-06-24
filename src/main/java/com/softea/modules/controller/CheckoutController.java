@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
+import com.softea.modules.handler.OrderNotFoundException;
 import com.softea.modules.service.OrderService;
 import lombok.RequiredArgsConstructor;
 
@@ -39,11 +40,13 @@ public class CheckoutController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Order> findOrder(
 			@PathVariable(value="id") String id) {
-		var order = orderService.retrieveOrder(id);
-		if(order.isPresent()) {
-  		return ResponseEntity.ok(order.get());
+		try {
+  		return ResponseEntity.ok(
+				orderService.retrieveOrder(id));
+		} catch(OrderNotFoundException onfe) {
+			System.out.println(onfe);
+  		return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/place-order")

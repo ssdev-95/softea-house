@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.softea.modules.dto.ProductDTO;
 import com.softea.modules.entity.Product;
+import com.softea.modules.handler.ProductNotFoundException;
 import com.softea.modules.service.MenuService;
 import lombok.RequiredArgsConstructor;
 
@@ -33,11 +34,13 @@ public class MenuController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Product> getProduct(
 			@PathVariable(value="id") String id) {
-		var product = menuService.getProduct(id);
-		if(product.isPresent()) {
-  		return ResponseEntity.ok(product.get());
+		try {
+  		return ResponseEntity.ok(
+				menuService.getProduct(id));
+		} catch(ProductNotFoundException pnfe) {
+			System.out.println(pnfe);
+  		return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/add-product")
