@@ -29,6 +29,7 @@ public class Order {
 	@Id @GeneratedValue(strategy=GenerationType.UUID)
 	private String id;
 	private long customer;
+	private int table;
 	@ManyToMany(cascade={CascadeType.ALL})
 	@JoinTable(
 	  name="order_items",

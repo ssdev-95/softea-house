@@ -22,6 +22,8 @@ public class OrderDTO {
 	private List<Product> orderItems;
 	@NotNull
 	private long customer;
+	@NotNull
+	private int table;
 
 	@Override
 	public int hashCode() {
