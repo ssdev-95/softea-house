@@ -33,12 +33,11 @@ public class MenuController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Product> getProduct(
 			@PathVariable(value="id") String id) {
-		try {
-  		return ResponseEntity.ok(
-  			menuService.getProduct(id));
-		} catch(RuntimeException re) {
-			return ResponseEntity.notFound().build();
+		var product = menuService.getProduct(id);
+		if(product.isPresent()) {
+  		return ResponseEntity.ok(product.get());
 		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/add-product")

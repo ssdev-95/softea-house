@@ -9,6 +9,7 @@ import com.softea.modules.dto.ProductDTO;
 import com.softea.modules.entity.Product;
 import com.softea.modules.repository.IProductRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,8 @@ public class MenuService {
 		return productRepository.listProducts();
 	}
 	
-	public Product getProduct(String id) {
-		final String exception = String.format(
-			"[EXCEPTION] Product not found {id: %s}", id);
-		Product product = productRepository
-			.findById(id)
-			.orElseThrow(
-				()->new RuntimeException(exception));
-		return product;
+	public Optional<Product> getProduct(String id) {
+		return productRepository.findById(id);
 	}
 
 	public Product saveProduct(ProductDTO dto) {
