@@ -13,5 +13,5 @@ import com.softea.modules.entity.Order;
 @Repository
 public interface OrderJPARepository
 	  extends JpaRepository<Order, String> {
-	List<Order> findAllByTable(int table);
+	List<Order> findAllByTableNumber(int table);
 }

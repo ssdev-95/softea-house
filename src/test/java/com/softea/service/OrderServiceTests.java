@@ -32,7 +32,7 @@ public class OrderServiceTests {
 	}
 
 	@AfterAll
-	void driop() {
+	void drop() {
 		Mockito.reset(or);
 	}
 
@@ -51,8 +51,10 @@ public class OrderServiceTests {
 		OrderDTO dto = new OrderDTO().setTable(0)
 			.setCustomer(123l)
 			.setOrderItems(Collections.emptyList());
+		
 		Mockito.when(or.save(dto))
 			.thenReturn(OrderFactory.create());
+		
 		Assertions.assertDoesNotThrow(
 			()->orderService.placeOrder(dto));
 	}
