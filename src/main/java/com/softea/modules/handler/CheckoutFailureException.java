@@ -5,22 +5,22 @@
 
 package com.softea.modules.handler;
 
-public class OrderNotFoundException
+public class CheckoutFailureException
 	  extends RuntimeException {
-	public OrderNotFoundException() {
-		super("Order not found");
+	public CheckoutFailureException() {
+		super("[EXCEPTION] Unknown checkout failure");
 	}
 
-	public OrderNotFoundException(String message) {
+	public CheckoutFailureException(String message) {
 		super(message);
 	}
 
-	public OrderNotFoundException(
+	public CheckoutFailureException(
 			Throwable throwable) {
 		super(throwable);
 	}
 
-	public OrderNotFoundException(
+	public CheckoutFailureException(
 			String message,
 			Throwable throwable) {
 		super(message, throwable);

@@ -50,4 +50,9 @@ public class OrderRepository
 	public List<Order> findAll() {
 	  return jpaRepository.findAll();
 	}
+
+	@Override
+	public Order patch(Order order) {
+	  return jpaRepository.save(order);
+	}
 }

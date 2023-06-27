@@ -82,6 +82,16 @@ public class Order {
 			.count();
 	}
 
+	public boolean isOpen() {
+		return orderStatus.equals(
+			OrderStatus.OPEN_ORDER);
+	}
+
+	public boolean isPaid() {
+		return orderStatus.equals(
+			OrderStatus.PAID_ORDER);
+	}
+
 	@Override
 	public String toString() {
 		final String base = "{id:%s,customer:%s,price:%s},items:%s";
