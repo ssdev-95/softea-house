@@ -13,7 +13,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
 import com.softea.factory.OrderFactory;
 import com.softea.modules.dto.OrderDTO;
-import com.softea.modules.handler.OrderNotFoundException;
+import com.softea.modules.entity.enums.OrderStatus;
+import com.softea.modules.handler.CheckoutFailureException;
 import com.softea.modules.repository.IOrderRepository;
 import com.softea.modules.service.OrderService;
 import com.softea.modules.repository.OrderRepository;
@@ -66,9 +67,13 @@ public class OrderServiceTests {
 		Mockito.when(or.findById(id)).thenReturn(		
 			Optional.empty());
 		
-		Assertions.assertThrows(
-			OrderNotFoundException.class,
+		var exception = Assertions.assertThrows(
+			CheckoutFailureException.class,
 			()->orderService.retrieveOrder(id));
+
+		Assertions.assertEquals(
+			"[EXCEPTION] Order not found",
+			exception.getMessage());
 	}
 
 	@Test
@@ -80,5 +85,33 @@ public class OrderServiceTests {
 
 		Assertions.assertDoesNotThrow(
 			()->orderService.retrieveOrder(id));
+	}
+
+	@Test
+	void should_not_close_an_order_that_is_not_open() {
+		String id = "17fhsks";
+
+		Mockito.when(or.findById(id)).thenReturn(
+			Optional.of(OrderFactory.create()
+				.setOrderStatus(OrderStatus.PAID_ORDER)));
+
+		var exception = Assertions.assertThrows(
+			CheckoutFailureException.class,
+			()->orderService.closeOrder(id));
+
+		Assertions.assertEquals(
+			"[EXCEPTION] Cannot close not open order",
+			exception.getMessage());
+	}
+
+	@Test
+	void should_close_an_order_without_fail() {
+		String id = "118ejfkss";
+		
+		Mockito.when(or.findById(id)).thenReturn(
+			Optional.of(OrderFactory.create()));
+		
+		Assertions.assertDoesNotThrow(
+			()->orderService.closeOrder(id));   
 	}
 }
