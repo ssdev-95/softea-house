@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,58 +46,69 @@ public class OrderService {
 	}
 
 	public Order closeOrder(String id) {
-	  Order order = orderRepository.findById(id)
-		  .orElseThrow(()->new CheckoutFailureException(
-				defaultException));
+		/**
+		 * TODO: Convert and pass as callback to update method
+		 * if(!order.isOpen())
+		 * throw new CheckoutFailureException(
+		 * "[EXCEPTION] Cannot close not open order");
+		**/
 
-		if(validateCreationDate(order.getCreated_at()))
-			throw new CheckoutFailureException(
-				"[EXCEPTION] Can only update orders from current date");
-
-		if(!order.isOpen())
-			throw new CheckoutFailureException(
-				"[EXCEPTION] Cannot close not open order");
-
-		order.setOrderStatus(OrderStatus.PAID_ORDER)
-			.setUpdated_at(LocalDateTime.now());
-		return orderRepository.patch(order);
+		return updateOrder(
+			id,
+			"PAID_ORDER",
+			"[EXCEPTION] Cannot close not open order",
+			(Order o)->!o.isOpen());
 	}
 
 	public Order cancelOrder(String id) {
-		Order order = orderRepository
-		  .findById(id)
-			.orElseThrow(()->new CheckoutFailureException(
-				defaultException));
+		/**
+		 * TODO: Convert and pass as callback to update method
+		 * if(!order.someBoolean())
+		 * throw new CheckoutFailureException(
+		 * "[EXCEPTION] Cannot cancel not open order");
+		**/
 
-		if(validateCreationDate(order.getCreated_at()))
-			throw new CheckoutFailureException(
-			  "[EXCEPTION] Can only update orders from current date");
-
-		if(!order.isOpen())
-			throw new CheckoutFailureException(
-				"[EXCEPTION] Cannot cancel not open order");
-
-		order.setOrderStatus(OrderStatus.CANCELED_ORDER)
-			.setUpdated_at(LocalDateTime.now());
-		return orderRepository.patch(order);
+		return updateOrder(
+			id,
+			"CANCELED_ORDER",
+			"[EXCEPTION] Cannot cancel not open order",
+			(Order o)->!o.isOpen());
 	}
 
 	public Order reverseOrder(String id) {
-		Order order = orderRepository
-			.findById(id)
+		/**
+		 * TODO: Convert and pass as callback to update method
+		 * if(!order.isPaid())
+		 * throw new CheckoutFailureException(
+		 * "[EXCEPTION] Cannot reverse not paid order");
+		**/
+
+		return updateOrder(
+			id,
+			"REVERSED_ORDER",
+			"[EXCEPTION] Cannot reverse not paid order",
+			(Order o)->!o.isPaid());
+	}
+
+	private Order updateOrder(
+		  String id,
+			String status,
+			String exitMsg,
+			Function<Order, Boolean> callback) {
+		Order order = orderRepository.findById(id)
 			.orElseThrow(()->new CheckoutFailureException(
 				defaultException));
 
 		if(validateCreationDate(order.getCreated_at()))
-		  throw new CheckoutFailureException(
+			throw new CheckoutFailureException(
 				"[EXCEPTION] Can only update orders from current date");
 
-		if(!order.isPaid())
-			throw new CheckoutFailureException(
-				"[EXCEPTION] Cannot reverse not paid order");
+		if(callback.apply(order))
+			throw new CheckoutFailureException(exitMsg);
 
-		order.setOrderStatus(OrderStatus.REVERSED_ORDER)
+		order.setOrderStatus(OrderStatus.valueOf(status))
 			.setUpdated_at(LocalDateTime.now());
+		
 		return orderRepository.patch(order);
 	}
 
