@@ -15,4 +15,5 @@ public interface IOrderRepository {
 	List<Order> findAllByTable(int table);
 	Optional<Order> findById(String id);
 	Order save(OrderDTO dto);
+	Order patch(Order order);
 }

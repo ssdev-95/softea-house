@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Entity @Table(name="skus")
+@Entity @Table(name="t_products")
 @Getter @Setter @Accessors(chain=true)
 @NoArgsConstructor @AllArgsConstructor
 public class Product {

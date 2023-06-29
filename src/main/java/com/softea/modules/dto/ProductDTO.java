@@ -20,7 +20,7 @@ public class ProductDTO {
 	@NotNull
 	private String sku;
 	@NotNull @Min(1)
-	private Double price;
+	private double price;
 
 	@Override
 	public int hashCode() {

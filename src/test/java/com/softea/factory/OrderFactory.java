@@ -17,7 +17,7 @@ public class OrderFactory {
 		return new Order()
 			.setCustomer(customer)
 			.setOrderItems(items)
-			.setTable(table);
+			.setTableNumber(table);
 	}
 
 	public static Order create() {

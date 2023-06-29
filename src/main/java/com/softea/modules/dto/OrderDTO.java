@@ -5,10 +5,12 @@
 
 package com.softea.modules.dto;
 
-import com.softea.modules.entity.Product;
 import java.util.List;
 import java.util.Objects;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +20,11 @@ import lombok.experimental.Accessors;
 @Getter @Setter @Accessors(chain=true)
 @NoArgsConstructor @AllArgsConstructor
 public class OrderDTO {
-	@NotNull
-	private List<Product> orderItems;
+	@NotEmpty
+	private List<String> orderItems;
 	@NotNull
 	private long customer;
-	@NotNull
+	@NotNull @PositiveOrZero @Max(9)
 	private int table;
 
 	@Override
