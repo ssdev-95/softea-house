@@ -18,6 +18,8 @@ import com.softea.modules.handler.CheckoutFailureException;
 import com.softea.modules.repository.IOrderRepository;
 import com.softea.modules.service.OrderService;
 import com.softea.modules.repository.OrderRepository;
+
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -113,5 +115,24 @@ public class OrderServiceTests {
 		
 		Assertions.assertDoesNotThrow(
 			()->orderService.closeOrder(id));   
+	}
+
+	@Test
+	void should_not_update_an_order_from_past_days() {
+		String id = "bduq81991";
+
+		Mockito.when(or.findById(id)).thenReturn(
+			Optional.of(OrderFactory.create()
+				.setCreated_at(LocalDateTime.parse(
+					"2023-06-20T14:23:00.000z"))));
+
+		var exception = Assertions.assertThrows(
+			CheckoutFailureException.class,
+			()->orderService.closeOrder(id));
+
+
+		Assertions.assertEquals(
+			"[EXCEPTION] Can only update orders from current date",
+			exception.getMessage());
 	}
 }

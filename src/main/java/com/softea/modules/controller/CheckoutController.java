@@ -65,7 +65,16 @@ public class CheckoutController {
 				orderService.closeOrder(id));
 		} catch(CheckoutFailureException e) {
 			System.out.println(e);
-			return ResponseEntity.notFound().build();
+			switch(e.getMessage()) {
+				case "[EXCEPTION] Order not found":
+					return ResponseEntity.notFound().build();
+				case "[EXCEPTION] Cannot close not open order":
+				case "[EXCEPTION] Can only update orders from current date":
+					return ResponseEntity.badRequest().build();
+				default:
+					return ResponseEntity.internalServerError()
+						.build();
+			}
 		}
 	}
 
@@ -77,7 +86,37 @@ public class CheckoutController {
 				orderService.reverseOrder(id));
 		} catch(CheckoutFailureException e) {
 			System.out.println(e);
-			return ResponseEntity.notFound().build();
+			switch(e.getMessage()) {
+				case "[EXCEPTION] Order not found":
+					return ResponseEntity.notFound().build();
+				case "[EXCEPTION] Cannot reverse not paid order":
+				case "[EXCEPTION] Can only update orders from current date":
+					return ResponseEntity.badRequest().build();
+				default:
+					return ResponseEntity.internalServerError()
+						.build();
+			}
 		}
 	}
+
+	@PatchMapping("/{id}/cancel")
+	ResponseEntity<Order> cancelOrder(
+			@PathVariable("id") String id) {
+		try {
+			return ResponseEntity.ok(
+				orderService.cancelOrder(id));
+		} catch(CheckoutFailureException e) {
+			System.out.println(e);
+			switch(e.getMessage()) {
+				case "[EXCEPTION] Order not found":
+					return ResponseEntity.notFound().build();
+				case "[EXCEPTION] Cannot cancel not open order":
+				case "[EXCEPTION] Can only update orders from current date":
+					return ResponseEntity.badRequest().build();
+				default:
+					return ResponseEntity.internalServerError()
+						.build();
+			}
+		}
+  }
 }
