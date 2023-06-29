@@ -124,12 +124,11 @@ public class OrderServiceTests {
 		Mockito.when(or.findById(id)).thenReturn(
 			Optional.of(OrderFactory.create()
 				.setCreated_at(LocalDateTime.parse(
-					"2023-06-20T14:23:00.000z"))));
+					"2023-06-20T14:23:00.000"))));
 
 		var exception = Assertions.assertThrows(
 			CheckoutFailureException.class,
 			()->orderService.closeOrder(id));
-
 
 		Assertions.assertEquals(
 			"[EXCEPTION] Can only update orders from current date",
