@@ -6,6 +6,7 @@
 package com.softea.modules.entity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,10 +35,15 @@ public class Order {
 	@Id @GeneratedValue(strategy=GenerationType.UUID)
 	private String id;
 	private long customer;
+
+	@Column(name="table_number")
 	private int tableNumber;
 
-	private LocalDateTime created_at;
-	private LocalDateTime updated_at;
+	@Column(name="created_at")
+	private LocalDateTime createdAt;
+
+	@Column(name="updated_at")
+	private LocalDateTime updatedAt;
 
 	@ManyToMany(
 	  fetch = FetchType.EAGER,
@@ -53,6 +59,7 @@ public class Order {
 	private List<Product> orderItems;
 
 	@Enumerated(EnumType.STRING)
+	@Column(name="order_status")
 	private OrderStatus orderStatus;
 
 	public Order() {
@@ -60,8 +67,8 @@ public class Order {
 		customer = 1l;
 		tableNumber = 1;
 		orderItems = Collections.emptyList();
-		created_at = LocalDateTime.now();
-		updated_at = null;
+		createdAt = LocalDateTime.now();
+		updatedAt = null;
 		orderStatus = OrderStatus.OPEN_ORDER;
 	}
 

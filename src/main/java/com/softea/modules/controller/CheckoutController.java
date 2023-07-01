@@ -6,14 +6,9 @@
 package com.softea.modules.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
 import com.softea.modules.handler.CheckoutFailureException;
@@ -26,10 +21,23 @@ import lombok.RequiredArgsConstructor;
 public class CheckoutController {
 	private final OrderService orderService;
 
-	@GetMapping("/")
-	public ResponseEntity<List<Order>> listOrders() {
-		return ResponseEntity.ok(
-			orderService.getAllOrders());
+	@GetMapping("")
+	public ResponseEntity<List<Order>> listOrders(
+			@RequestParam("date") Optional<String> date) {
+		try {
+			if(date.isPresent()) {
+				return ResponseEntity.ok(orderService
+					.retrieveOrdersByDate(date.get()));
+			}
+
+			return ResponseEntity.ok(
+				orderService.getAllOrders());
+		} catch(CheckoutFailureException e) {
+		  System.out.println(e);
+			
+			return ResponseEntity.unprocessableEntity()
+				.build();
+		}
 	}
 
 	@GetMapping("/{table}/orders")

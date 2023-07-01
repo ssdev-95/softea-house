@@ -1,11 +1,19 @@
 # Core settings variabless
 
 spring:
+  datasource:
+    url: test
+    username: test
+    password: test
   jpa:
     open-in-view: false
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /test
 hibernate:
   globally_quoted_identifiers: true

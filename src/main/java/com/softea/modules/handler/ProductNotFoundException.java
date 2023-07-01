@@ -8,7 +8,7 @@ package com.softea.modules.handler;
 public class ProductNotFoundException
 	  extends RuntimeException {
 	public ProductNotFoundException() {
-		super("Order not found");
+		super("[EXCEPTION] Product not found");
 	}
 
 	public ProductNotFoundException(String message) {
