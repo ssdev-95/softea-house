@@ -7,12 +7,7 @@ package com.softea.modules.controller;
 
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.softea.modules.dto.ProductDTO;
 import com.softea.modules.entity.Product;
 import com.softea.modules.handler.ProductNotFoundException;

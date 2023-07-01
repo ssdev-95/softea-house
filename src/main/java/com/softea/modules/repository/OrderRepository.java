@@ -5,6 +5,7 @@
 
 package com.softea.modules.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,12 @@ public class OrderRepository
 	@Override
 	public Optional<Order> findById(String id) {
 	  return jpaRepository.findById(id);
+	}
+
+	@Override
+	public List<Order> findByCreatedAt(
+			LocalDateTime createdAt) {
+		return jpaRepository.findByCreatedAt(createdAt);
 	}
 
 	@Override

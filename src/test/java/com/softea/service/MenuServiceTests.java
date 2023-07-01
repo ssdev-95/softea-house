@@ -7,11 +7,9 @@ package com.softea.service;
 
 import java.util.Optional;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mockito;
 import com.softea.factory.ProductFactory;
 import com.softea.modules.dto.ProductDTO;
 import com.softea.modules.handler.ProductNotFoundException;
@@ -19,6 +17,8 @@ import com.softea.modules.repository.IProductRepository;
 import com.softea.modules.repository.ProductRepository;
 import com.softea.modules.service.MenuService;
 import jakarta.validation.ConstraintViolationException;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MenuServiceTests {
@@ -27,27 +27,27 @@ public class MenuServiceTests {
 	
 	@BeforeAll
 	void setup() {
-		pr = Mockito.mock(ProductRepository.class);
+		pr = mock(ProductRepository.class);
 		menu = new MenuService(pr);
 	}
 
 	@AfterAll
 	void drop() {
-		Mockito.reset(pr);
+		reset(pr);
 	}
 
 	@Test
 	void should_not_find_a_product() {
 		final String id = "12345";
 		
-		Mockito.when(pr.findById(id)).thenReturn(
+		when(pr.findById(id)).thenReturn(
 			Optional.empty());
 		
-		var exception = Assertions.assertThrows(
+		var exception = assertThrows(
 			ProductNotFoundException.class,
 			()->menu.getProduct(id));
 
-		Assertions.assertEquals(
+		assertEquals(
 			"[EXCEPTION] Product not found",
 			exception.getMessage());
 	}
@@ -56,23 +56,23 @@ public class MenuServiceTests {
 	void should_find_a_product() {
 		final String id = "1irjq8d8j1nr8dajam";
 		
-		Mockito.when(pr.findById(id)).thenReturn(
-			Optional.of(ProductFactory.create()));
+		when(pr.findById(id)).thenReturn(Optional.of(
+			ProductFactory.create()));
 		
-		var product = Assertions.assertDoesNotThrow(
+		var product = assertDoesNotThrow(
 			()->menu.getProduct(id));
 
-		Assertions.assertNotNull(product);
+		assertNotNull(product);
 	}
 
 	@Test
 	void should_fail_saving_a_product() {
 		final ProductDTO dto = new ProductDTO(null, 0d);
 		
-		Mockito.when(pr.save(dto)).thenThrow(
+		when(pr.save(dto)).thenThrow(
 			ConstraintViolationException.class);
 		
-		Assertions.assertThrows(
+		assertThrows(
 			ConstraintViolationException.class,
 			()->menu.saveProduct(dto));
 	}
@@ -82,12 +82,12 @@ public class MenuServiceTests {
 		final ProductDTO dto = new ProductDTO(
 			"Black Tea",7.95d);
 	
-		Mockito.when(pr.save(dto)).thenReturn(
+		when(pr.save(dto)).thenReturn(
 			ProductFactory.create());
 
-		var product = Assertions.assertDoesNotThrow(
+		var product = assertDoesNotThrow(
 			()->menu.saveProduct(dto));
 
-		Assertions.assertNotNull(product);
+		assertNotNull(product);
 	}
 }

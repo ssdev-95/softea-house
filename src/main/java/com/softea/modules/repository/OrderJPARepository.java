@@ -5,6 +5,7 @@
 
 package com.softea.modules.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ import com.softea.modules.entity.Order;
 public interface OrderJPARepository
 	  extends JpaRepository<Order, String> {
 	List<Order> findAllByTableNumber(int table);
+	List<Order> findByCreatedAt(
+	  LocalDateTime createdAt);
 }
