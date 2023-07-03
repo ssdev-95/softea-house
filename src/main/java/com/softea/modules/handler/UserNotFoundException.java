@@ -5,23 +5,23 @@
 
 package com.softea.modules.handler;
 
-public class ProductNotFoundException
+public class UserNotFoundException
 	  extends RuntimeException {
-	public ProductNotFoundException() {
+	public UserNotFoundException() {
 		super(
 			ExceptionsHandler.DEFAULT_EXCEPTION_MESSAGE);
 	}
 
-	public ProductNotFoundException(String message) {
+	public UserNotFoundException(String message) {
 		super(message);
 	}
 
-	public ProductNotFoundException(
+	public UserNotFoundException(
 			Throwable throwable) {
 		super(throwable);
 	}
 
-	public ProductNotFoundException(
+	public UserNotFoundException(
 			String message,
 			Throwable throwable) {
 		super(message, throwable);

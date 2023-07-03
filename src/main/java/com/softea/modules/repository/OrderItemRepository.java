@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.softea.modules.dto.OrderItemDTO;
 import com.softea.modules.entity.Order;
 import com.softea.modules.entity.OrderItem;
+import com.softea.modules.handler.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class OrderItemRepository
 			Order order, OrderItemDTO dto) {
 		var product = prodRepository
 			.findById(dto.getProductId())
-			.orElseThrow(()->new RuntimeException(
+			.orElseThrow(()->new ProductNotFoundException(
 				"[EXCEPTION] Product not found"));
 
 		OrderItem item = new OrderItem()

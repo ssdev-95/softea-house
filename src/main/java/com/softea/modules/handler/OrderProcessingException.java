@@ -5,22 +5,23 @@
 
 package com.softea.modules.handler;
 
-public class AuthFailureException
+public class OrderProcessingException
 	  extends RuntimeException {
-	public AuthFailureException() {
-		super("[EXCEPTION] Unknown auth failure");
+	public OrderProcessingException() {
+		super(
+			ExceptionsHandler.DEFAULT_EXCEPTION_MESSAGE);
 	}
 
-	public AuthFailureException(String message) {
+	public OrderProcessingException(String message) {
 		super(message);
 	}
 
-	public AuthFailureException(
+	public OrderProcessingException(
 			Throwable throwable) {
 		super(throwable);
 	}
 
-	public AuthFailureException(
+	public OrderProcessingException(
 			String message,
 			Throwable throwable) {
 		super(message, throwable);

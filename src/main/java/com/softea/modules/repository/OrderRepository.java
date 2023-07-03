@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
 import com.softea.modules.entity.OrderItem;
-import com.softea.modules.handler.*;
+import com.softea.modules.handler.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import static java.util.stream.Collectors.toList;
 
@@ -38,7 +38,7 @@ public class OrderRepository
 	public Order save(OrderDTO dto) {
 		var customer = userRepository
 			.findByTaxId(dto.getCustomer())
-			.orElseThrow(()->new AuthFailureException(
+			.orElseThrow(()->new UserNotFoundException(
 			  "[EXCEPTION] User not found"));
 
 	  var order = new Order().setCustomer(customer);
