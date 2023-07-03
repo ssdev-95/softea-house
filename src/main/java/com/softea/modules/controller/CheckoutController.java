@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
-import com.softea.modules.handler.CheckoutFailureException;
+import com.softea.modules.handler.*;
 import com.softea.modules.service.OrderService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,108 +25,56 @@ public class CheckoutController {
 
 	@GetMapping("")
 	public ResponseEntity<List<Order>> listOrders(
-			@RequestParam("date") Optional<String> date) {
-		try {
-			if(date.isPresent()) {
-				return ResponseEntity.ok(orderService
-					.retrieveOrdersByDate(date.get()));
-			}
+		@RequestParam("date") Optional<String> date)
+			throws OrderNotFoundException {
+		if(date.isPresent()) return ResponseEntity.ok(
+			orderService.retrieveOrdersByDate(date.get()));
 
-			return ResponseEntity.ok(
-				orderService.getAllOrders());
-		} catch(CheckoutFailureException e) {
-		  System.out.println(e);
-			
-			return ResponseEntity.unprocessableEntity()
-				.build();
-		}
-	}
-
-	@GetMapping("/{table}/orders")
-	public ResponseEntity<List<Order>> listOrdersByTable(@PathVariable("table") int table) {
 		return ResponseEntity.ok(
-			orderService.getAllTableOrders(table));
+			orderService.getAllOrders());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Order> findOrder(
-			@PathVariable(value="id") String id) {
-		try {
-  		return ResponseEntity.ok(
-				orderService.retrieveOrder(id));
-		} catch(CheckoutFailureException e) {
-			System.out.println(e);
-  		return ResponseEntity.notFound().build();
-		}
+			@PathVariable(value="id") @Valid String id)
+			throws OrderNotFoundException {
+  	return ResponseEntity.ok(
+			orderService.retrieveOrder(id));
 	}
 
 	@PostMapping("/place-order")
 	public ResponseEntity<Order> placeOrder(
-			@RequestBody OrderDTO body) {
+			@RequestBody @Valid OrderDTO body) {
 		return ResponseEntity.created(null).body(
 			orderService.placeOrder(body));
 	}
 
 	@PatchMapping("/{id}/pay")
 	ResponseEntity<Order> payOrder(
-			@PathVariable("id") String id) {
-		try {
-		  return ResponseEntity.ok(
+			@PathVariable("id") @Valid String id)
+			throws OrderProcessingException,
+						 OrderNotFoundException,
+						 OrderPaymentException {
+		return ResponseEntity.ok(
 				orderService.closeOrder(id));
-		} catch(CheckoutFailureException e) {
-			System.out.println(e);
-			switch(e.getMessage()) {
-				case "[EXCEPTION] Order not found":
-					return ResponseEntity.notFound().build();
-				case "[EXCEPTION] Cannot close not open order":
-				case "[EXCEPTION] Can only update orders from current date":
-					return ResponseEntity.badRequest().build();
-				default:
-					return ResponseEntity.internalServerError()
-						.build();
-			}
-		}
 	}
 
-	@PatchMapping("/{id}/reverse")
 	ResponseEntity<Order> reverseOrder(
-			@PathVariable("id") String id) {
-		try {
-			return ResponseEntity.ok(
-				orderService.reverseOrder(id));
-		} catch(CheckoutFailureException e) {
-			System.out.println(e);
-			switch(e.getMessage()) {
-				case "[EXCEPTION] Order not found":
-					return ResponseEntity.notFound().build();
-				case "[EXCEPTION] Cannot reverse not paid order":
-				case "[EXCEPTION] Can only update orders from current date":
-					return ResponseEntity.badRequest().build();
-				default:
-					return ResponseEntity.internalServerError()
-						.build();
-			}
-		}
+			@PathVariable("id") @Valid String id)
+			throws OrderProcessingException,
+				     OrderNotFoundException,
+						 OrderReversalException {
+		return ResponseEntity.ok(
+			orderService.reverseOrder(id));
 	}
 
 	@PatchMapping("/{id}/cancel")
 	ResponseEntity<Order> cancelOrder(
-			@PathVariable("id") String id) {
-		try {
-			return ResponseEntity.ok(
-				orderService.cancelOrder(id));
-		} catch(CheckoutFailureException e) {
-			System.out.println(e);
-			switch(e.getMessage()) {
-				case "[EXCEPTION] Order not found":
-					return ResponseEntity.notFound().build();
-				case "[EXCEPTION] Cannot cancel not open order":
-				case "[EXCEPTION] Can only update orders from current date":
-					return ResponseEntity.badRequest().build();
-				default:
-					return ResponseEntity.internalServerError()
-						.build();
-			}
-		}
-  }
+			@PathVariable("id") @Valid String id)
+			throws OrderProcessingException,
+						 OrderNotFoundException,
+						 OrderCancelmentException {
+		return ResponseEntity.ok(
+			orderService.cancelOrder(id));
+	}
 }

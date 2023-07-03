@@ -12,7 +12,7 @@ import org.junit.jupiter.api.TestInstance;
 import com.softea.factory.OrderFactory;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.enums.OrderStatus;
-import com.softea.modules.handler.CheckoutFailureException;
+import com.softea.modules.handler.*;
 import com.softea.modules.repository.IOrderRepository;
 import com.softea.modules.service.OrderService;
 import com.softea.modules.repository.OrderRepository;
@@ -50,7 +50,7 @@ public class OrderServiceTests {
 	@Test
 	void should_add_an_order() {
 		final OrderDTO dto = new OrderDTO().setTable(0)
-			.setCustomer(123l)
+			.setCustomer("1234567890")
 			.setOrderItems(Collections.emptyList());
 		
 		when(or.save(dto)).thenReturn(
@@ -68,7 +68,7 @@ public class OrderServiceTests {
 			Optional.empty());
 
 		var exception = assertThrows(
-			CheckoutFailureException.class,
+			OrderNotFoundException.class,
 			()->orderService.retrieveOrder(id));
 
 		assertEquals(
@@ -96,7 +96,7 @@ public class OrderServiceTests {
 			  OrderStatus.PAID_ORDER)));
 
 		var exception = assertThrows(
-			CheckoutFailureException.class,
+			OrderPaymentException.class,
 			()->orderService.closeOrder(id));
 
 		assertEquals(
@@ -125,7 +125,7 @@ public class OrderServiceTests {
 					"2023-06-20T14:23:00.000"))));
 
 		var exception = assertThrows(
-			CheckoutFailureException.class,
+			OrderProcessingException.class,
 			()->orderService.closeOrder(id));
 
 		assertEquals("[EXCEPTION] Can only update orders from current date",
@@ -137,7 +137,7 @@ public class OrderServiceTests {
 		final String isoDate = "2024-12-31T12:00:00.000";
 
 		var exception = assertThrows(
-			CheckoutFailureException.class,
+			OrderNotFoundException.class,
 			()->orderService.retrieveOrdersByDate(isoDate));
 
 		verify(or,times(0)).findByCreatedAt(

@@ -5,23 +5,23 @@
 
 package com.softea.modules.handler;
 
-public class ProductNotFoundException
+public class OrderCancelmentException
 	  extends RuntimeException {
-	public ProductNotFoundException() {
+	public OrderCancelmentException() {
 		super(
 			ExceptionsHandler.DEFAULT_EXCEPTION_MESSAGE);
 	}
 
-	public ProductNotFoundException(String message) {
+	public OrderCancelmentException(String message) {
 		super(message);
 	}
 
-	public ProductNotFoundException(
+	public OrderCancelmentException(
 			Throwable throwable) {
 		super(throwable);
 	}
 
-	public ProductNotFoundException(
+	public OrderCancelmentException(
 			String message,
 			Throwable throwable) {
 		super(message, throwable);

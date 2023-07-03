@@ -5,22 +5,23 @@
 
 package com.softea.modules.handler;
 
-public class CheckoutFailureException
+public class OrderProcessingException
 	  extends RuntimeException {
-	public CheckoutFailureException() {
-		super("[EXCEPTION] Unknown checkout failure");
+	public OrderProcessingException() {
+		super(
+			ExceptionsHandler.DEFAULT_EXCEPTION_MESSAGE);
 	}
 
-	public CheckoutFailureException(String message) {
+	public OrderProcessingException(String message) {
 		super(message);
 	}
 
-	public CheckoutFailureException(
+	public OrderProcessingException(
 			Throwable throwable) {
 		super(throwable);
 	}
 
-	public CheckoutFailureException(
+	public OrderProcessingException(
 			String message,
 			Throwable throwable) {
 		super(message, throwable);

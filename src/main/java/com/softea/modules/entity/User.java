@@ -5,6 +5,7 @@
 
 package com.softea.modules.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,18 +13,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Entity @Table(name="t_products")
+@Entity @Table(name="t_users")
 @Getter @Setter @Accessors(chain=true)
 @NoArgsConstructor @AllArgsConstructor
-public class Product {
+public class User {
 	@Id @GeneratedValue(strategy=GenerationType.UUID)
 	private String id;
-	private String sku;
-	private double price;
-
-	@Override
-	public String toString() {
-		final String base = "{id:%s,sku:%s,price:%s}";
-	  return String.format(base, id, sku, price);
-	}
+	private String name;
+	private String email;
+	@JsonIgnore
+	private String password;
+	@JsonIgnore @Column(name="tax_id")
+	private String taxId;
 }

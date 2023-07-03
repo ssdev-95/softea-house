@@ -5,26 +5,24 @@
 
 package com.softea.factory;
 
-import com.softea.modules.entity.*;
+import java.util.Collections;
 import java.util.List;
+import com.softea.modules.entity.*;
 
 public class OrderFactory {
 	public static Order create(
 			String id,
-			long customer,
-			int table,
-			List<Product> items) {
+			User customer,
+			List<OrderItem> items) {
 		return new Order()
 			.setCustomer(customer)
-			.setOrderItems(items)
-			.setTableNumber(table);
+			.setOrderItems(items);
 	}
 
 	public static Order create() {
 		return create(
 			"1822",
-			183788181881384L,
-			9,
-			List.of(ProductFactory.create()));
+			UserFactory.create(),
+			Collections.emptyList());
 	}
 }

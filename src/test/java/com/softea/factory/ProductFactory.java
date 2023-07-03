@@ -16,8 +16,8 @@ public class ProductFactory {
 		return new Product()
 			.setId(id)
 			.setSku(sku)
-			.setPrice(price)
-			.setOrders(List.of());
+			.setPrice(price);
+			//.setOrders(List.of());
 	}
 
 	public static Product create() {

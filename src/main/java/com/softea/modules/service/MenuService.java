@@ -24,7 +24,8 @@ public class MenuService {
 	
 	public Product getProduct(String id) {
 		var product = productRepository.findById(id)
-			.orElseThrow(ProductNotFoundException::new);
+			.orElseThrow(()->new ProductNotFoundException(
+				"[EXCEPTION] Product not found"));
 		return product;
 	}
 

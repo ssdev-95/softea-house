@@ -13,7 +13,6 @@ import com.softea.modules.entity.Order;
 
 public interface IOrderRepository {
 	List<Order> findAll();
-	List<Order> findAllByTable(int table);
 	List<Order> findByCreatedAt(
 		LocalDateTime createdAt);
 	Optional<Order> findById(String id);
