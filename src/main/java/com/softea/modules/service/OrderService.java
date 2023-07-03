@@ -27,10 +27,6 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 
-	public List<Order> getAllTableOrders(int table) {
-		return orderRepository.findAllByTable(table);
-	}
-
 	public Order retrieveOrder(String id) {
 		var order = orderRepository
 			.findById(id)

@@ -21,9 +21,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor @AllArgsConstructor
 public class OrderDTO {
 	@NotEmpty
-	private List<String> orderItems;
+	private List<OrderItemDTO> orderItems;
 	@NotNull
-	private long customer;
+	private String customer;
 	@NotNull @PositiveOrZero @Max(9)
 	private int table;
 

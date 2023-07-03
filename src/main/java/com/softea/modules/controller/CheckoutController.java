@@ -40,12 +40,6 @@ public class CheckoutController {
 		}
 	}
 
-	@GetMapping("/{table}/orders")
-	public ResponseEntity<List<Order>> listOrdersByTable(@PathVariable("table") int table) {
-		return ResponseEntity.ok(
-			orderService.getAllTableOrders(table));
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<Order> findOrder(
 			@PathVariable(value="id") String id) {

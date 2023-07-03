@@ -50,7 +50,7 @@ public class OrderServiceTests {
 	@Test
 	void should_add_an_order() {
 		final OrderDTO dto = new OrderDTO().setTable(0)
-			.setCustomer(123l)
+			.setCustomer("1234567890")
 			.setOrderItems(Collections.emptyList());
 		
 		when(or.save(dto)).thenReturn(

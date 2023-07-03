@@ -5,7 +5,7 @@
 
 package com.softea.modules.repository;
 
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,8 @@ public class ProductRepository
 	public Product save(ProductDTO dto) {
 	  Product product = new Product()
 			.setSku(dto.getSku())
-			.setPrice(dto.getPrice())
-			.setOrders(Collections.emptyList());
+			.setPrice(dto.getPrice());
+			//.setOrders(Collections.emptyList());
 		return jpaRepository.save(product);
 	}
 }

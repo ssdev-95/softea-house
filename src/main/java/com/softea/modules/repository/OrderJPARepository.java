@@ -14,7 +14,6 @@ import com.softea.modules.entity.Order;
 @Repository
 public interface OrderJPARepository
 	  extends JpaRepository<Order, String> {
-	List<Order> findAllByTableNumber(int table);
 	List<Order> findByCreatedAt(
 	  LocalDateTime createdAt);
 }

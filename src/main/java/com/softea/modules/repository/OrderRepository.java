@@ -11,16 +11,17 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.softea.modules.dto.OrderDTO;
 import com.softea.modules.entity.Order;
-import com.softea.modules.handler.ProductNotFoundException;
+import com.softea.modules.entity.OrderItem;
+import com.softea.modules.handler.*;
 import lombok.RequiredArgsConstructor;
 import static java.util.stream.Collectors.toList;
 
-@Service
-@RequiredArgsConstructor
+@Service @RequiredArgsConstructor
 public class OrderRepository
 	  implements IOrderRepository {
 	private final OrderJPARepository jpaRepository;
-	private final ProductJPARepository pjpaRepository;
+	private final IUserRepository userRepository;
+	private final IOrderItemRepository orderItemRepo;
 
 	@Override
 	public Optional<Order> findById(String id) {
@@ -34,23 +35,24 @@ public class OrderRepository
 	}
 
 	@Override
-	public List<Order> findAllByTable(int table) {
-	  return jpaRepository.findAllByTableNumber(table);
-	}
-
-	@Override
 	public Order save(OrderDTO dto) {
-	  var order = new Order()
-			.setTableNumber(dto.getTable())
-			.setCustomer(dto.getCustomer())
-			.setOrderItems(
-				dto.getOrderItems()
-				.stream()
-				.map(id->pjpaRepository.findById(id).
-					orElseThrow(ProductNotFoundException::new))
-				.collect(toList()));
-		return jpaRepository
-		  .save(order);
+		var customer = userRepository
+			.findByTaxId(dto.getCustomer())
+			.orElseThrow(()->new AuthFailureException(
+			  "[EXCEPTION] User not found"));
+
+	  var order = new Order().setCustomer(customer);
+
+		jpaRepository.save(order);
+
+		List<OrderItem> orderItems = dto.getOrderItems()
+			.stream()
+			.map(item->orderItemRepo.save(order, item))
+			.collect(toList());
+
+		order.setOrderItems(orderItems);
+
+		return order;
 	}
 
 	@Override
